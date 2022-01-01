@@ -23,76 +23,88 @@ var v;u.finalized=!0,u.elementProperties=new Map,u.elementStyles=[],u.shadowRoot
 var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:globalThis.litHtmlVersions=[]).push("2.0.2");class F extends u{constructor(){super(...arguments),this.renderOptions={host:this},this._$Dt=void 0}createRenderRoot(){var t,e;const i=super.createRenderRoot();return null!==(t=(e=this.renderOptions).renderBefore)&&void 0!==t||(e.renderBefore=i.firstChild),i}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Dt=((t,e,i)=>{var s,o;const r=null!==(s=null==i?void 0:i.renderBefore)&&void 0!==s?s:e;let n=r._$litPart$;if(void 0===n){const t=null!==(o=null==i?void 0:i.renderBefore)&&void 0!==o?o:null;r._$litPart$=n=new D(e.insertBefore(y(),t),t,void 0,null!=i?i:{})}return n._$AI(t),n})(e,this.renderRoot,this.renderOptions)}connectedCallback(){var t;super.connectedCallback(),null===(t=this._$Dt)||void 0===t||t.setConnected(!0)}disconnectedCallback(){var t;super.disconnectedCallback(),null===(t=this._$Dt)||void 0===t||t.setConnected(!1)}render(){return z}}F.finalized=!0,F._$litElement$=!0,null===(Z=globalThis.litElementHydrateSupport)||void 0===Z||Z.call(globalThis,{LitElement:F});const G=globalThis.litElementPolyfillSupport;null==G||G({LitElement:F}),(null!==(Y=globalThis.litElementVersions)&&void 0!==Y?Y:globalThis.litElementVersions=[]).push("3.0.2");customElements.define("sonos-card",class extends F{constructor(){super(),this.active=""}static get properties(){return{hass:{},config:{},active:{}}}render(){const t=[],e=[];let i=!0;for(const s of this.config.entities){const o=this.hass.states[s];if(i){i=!1;for(const t of o.attributes.source_list)e.push(t)}t[s]=o.attributes.friendly_name,o.attributes.sonos_group.length>1&&o.attributes.sonos_group[0]==s?"playing"==o.state&&""==this.active&&(this.active=s):1==o.attributes.sonos_group.length&&"playing"==o.state&&""==this.active&&(this.active=s)}return T`
       <div class="center">
         <div class="groups">
-        ${this.config.entities.map((e=>{const i=this.hass.states[e];return 1==i.attributes.sonos_group.length||i.attributes.sonos_group.length>1&&i.attributes.sonos_group[0]==e?T`
-              <div class="group" data-entity="${e}">
-                <div class="wrap ${this.active==e?"active":""}">
-                  <div class="inner-wrap">
-                    <span class="icon" style="">
-                      <div class="player ${"playing"==i.state?"active":""}">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                      </div>
-                    </span>
-                    ${i.attributes.sonos_group.map((e=>T`<span class="name">${t[e]}</span>`))}
-                    <span class="state">${i.attributes.media_artist} - ${i.attributes.media_title}</span>
+          ${this.config.entities.map((e=>{const i=this.hass.states[e];return 1==i.attributes.sonos_group.length||i.attributes.sonos_group.length>1&&i.attributes.sonos_group[0]==e?T`
+                <div class="group" data-entity="${e}">
+                  <div class="wrap ${this.active==e?"active":""}">
+                    <div class="inner-wrap">
+                      <span class="icon" style="">
+                        <div class="player ${"playing"==i.state?"active":""}">
+                          <div class="bar"></div>
+                          <div class="bar"></div>
+                          <div class="bar"></div>
+                        </div>
+                      </span>
+                      ${i.attributes.sonos_group.map((e=>T`<span class="name">${t[e]}</span>`))}
+                      <span class="state">${i.attributes.media_artist} - ${i.attributes.media_title}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            `:T``}))}
+              `:T``}))}
         </div>
 
         <div class="players">
-        ${""!=this.active?T`
-            <div class="player__container">
-              <div class="player__body">
-                  <div class="body__cover">
-                  </div>
-                  <div class="body__info">
+          ${""!=this.active?T`
+                <div class="player__container">
+                  <div class="player__body">
+                    <div class="body__cover"></div>
+                    <div class="body__info">
                       <div class="info__album">${this.hass.states[this.active].attributes.media_album_name}</div>
                       <div class="info__song">${this.hass.states[this.active].attributes.media_title}</div>
                       <div class="info__artist">${this.hass.states[this.active].attributes.media_artist}</div>
-                  </div>
-                  <div class="body__buttons">
+                    </div>
+                    <div class="body__buttons">
                       <ul class="list list--buttons">
-                          <li class="middle"><a class="list__link">
-                              ${"playing"!=this.hass.states[this.active].state?T`<ha-icon @click="${()=>this._play(this.active)}" .icon=${"mdi:play"}></ha-icon>`:T`<ha-icon @click="${()=>this._pause(this.active)}" .icon=${"mdi:stop"}></ha-icon>`}
-
-                          </a></li>
+                        <li class="middle">
+                          <a class="list__link">
+                            ${"playing"!=this.hass.states[this.active].state?T`<ha-icon @click="${()=>this._play(this.active)}" .icon=${"mdi:play"}></ha-icon>`:T`<ha-icon @click="${()=>this._pause(this.active)}" .icon=${"mdi:stop"}></ha-icon>`}
+                          </a>
+                        </li>
                       </ul>
+                    </div>
                   </div>
-              </div>
-              <div class="player__footer">
-                  <ul class="list list--footer">
-                      <li><ha-icon @click="${()=>this._volumeDown(this.active)}" .icon=${"mdi:volume-minus"}></ha-icon><input type="range" .value="${100*this.hass.states[this.active].attributes.volume_level}" @change=${t=>this._volumeSet(this.active,t.target.value)} min="0" max="100" id="volumeRange" class="volumeRange" style="background: linear-gradient(to right, rgb(211, 3, 32) 0%, rgb(211, 3, 32) ${100*this.hass.states[this.active].attributes.volume_level}%, rgb(211, 211, 211) ${100*this.hass.states[this.active].attributes.volume_level}%, rgb(211, 211, 211) 100%);"><ha-icon @click="${()=>this._volumeUp(this.active)}" .icon=${"mdi:volume-plus"}></ha-icon></li>
-                  </ul>
-              </div>
-            </div>
-          `:T``}
+                  <div class="player__footer">
+                    <ul class="list list--footer">
+                      <li>
+                        <ha-icon @click="${()=>this._volumeDown(this.active)}" .icon=${"mdi:volume-minus"}></ha-icon
+                        ><input
+                          type="range"
+                          .value="${100*this.hass.states[this.active].attributes.volume_level}"
+                          @change=${t=>this._volumeSet(this.active,t.target.value)}
+                          min="0"
+                          max="100"
+                          id="volumeRange"
+                          class="volumeRange"
+                          style="background: linear-gradient(to right, rgb(211, 3, 32) 0%, rgb(211, 3, 32) ${100*this.hass.states[this.active].attributes.volume_level}%, rgb(211, 211, 211) ${100*this.hass.states[this.active].attributes.volume_level}%, rgb(211, 211, 211) 100%);"
+                        /><ha-icon @click="${()=>this._volumeUp(this.active)}" .icon=${"mdi:volume-plus"}></ha-icon>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              `:T``}
         </div>
 
         <div class="sidebar">
           <ul class="members">
             ${""!=this.active?T`${this.hass.states[this.active].attributes.sonos_group.map((e=>e!=this.active?T`
-                <li>
-                  <div class="member unjoin-member" data-member="${e}" @click="${t=>this._unjoin(t)}">
-                    <div class="member-inner">
-                      <ha-icon .icon=${"mdi:minus"}></ha-icon>
-                      <span>${t[e]} </span>
-                    </div>
-                  </div>
-                </li>
-              `:T``))}
-            ${this.config.entities.map((e=>e==this.active||this.hass.states[this.active].attributes.sonos_group.includes(e)?T``:T`
-                  <li>
-                    <div class="member join-member" data-member="${e}" @click="${t=>this._join(t)}">
-                      <div class="member-inner">
-                        <ha-icon .icon=${"mdi:plus"}></ha-icon>
-                        <span>${t[e]} </span>
-                      </div>
-                    </div>
-                  </li>
-                `))}`:T``}
+                      <li>
+                        <div class="member unjoin-member" data-member="${e}" @click="${t=>this._unjoin(t)}">
+                          <div class="member-inner">
+                            <ha-icon .icon=${"mdi:minus"}></ha-icon>
+                            <span>${t[e]} </span>
+                          </div>
+                        </div>
+                      </li>
+                    `:T``))}
+                ${this.config.entities.map((e=>e==this.active||this.hass.states[this.active].attributes.sonos_group.includes(e)?T``:T`
+                      <li>
+                        <div class="member join-member" data-member="${e}" @click="${t=>this._join(t)}">
+                          <div class="member-inner">
+                            <ha-icon .icon=${"mdi:plus"}></ha-icon>
+                            <span>${t[e]} </span>
+                          </div>
+                        </div>
+                      </li>
+                    `))}`:T``}
           </ul>
         </div>
       </div>
@@ -108,24 +120,15 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
                     <span class="name">${t}</span>
                   </div>
                 </div>
-
               </li>
             `))}
         </ul>
       </div>
     `}updated(){this.shadowRoot.querySelectorAll(".group").forEach((t=>{t.addEventListener("click",(()=>{this.active=t.dataset.entity}))}))}_pause(t){this.hass.callService("media_player","media_pause",{entity_id:t})}_play(t){this.hass.callService("media_player","media_play",{entity_id:t})}_volumeDown(t){this.hass.callService("media_player","volume_down",{entity_id:t});for(const e in this.hass.states[t].sonos_group)e!=t&&this.hass.callService("media_player","volume_down",{entity_id:e})}_volumeUp(t){this.hass.callService("media_player","volume_up",{entity_id:t});for(const e in this.hass.states[t].sonos_group)e!=t&&this.hass.callService("media_player","volume_up",{entity_id:e})}_volumeSet(t,e){const i=e/100;this.hass.callService("media_player","volume_set",{entity_id:t,volume_level:i});for(const e in this.hass.states[t].sonos_group)e!=t&&this.hass.callService("media_player","volume_set",{entity_id:e,volume_level:i})}_sourceSet(t){t.target.dataset&&t.target.dataset.favorite&&(console.log(this.active),console.log(t.target.dataset.favorite),this.hass.callService("media_player","select_source",{source:t.target.dataset.favorite,entity_id:this.active}))}_join(t){t.target.dataset&&t.target.dataset.member&&(console.log(this.active),console.log(t.target.dataset.member),this.hass.callService("sonos","join",{master:this.active,entity_id:t.target.dataset.member}))}_unjoin(t){t.target.dataset&&t.target.dataset.member&&(console.log(this.active),console.log(t.target.dataset.member),this.hass.callService("sonos","unjoin",{master:this.active,entity_id:t.target.dataset.member}))}setConfig(t){if(!t.entities)throw new Error("You need to define entities");this.config=t}getCardSize(){return 1}static get styles(){return o`
       ha-card {
-        background: var(
-          --ha-card-background,
-          var(--paper-card-background-color, white)
-        );
+        background: var(--ha-card-background, var(--paper-card-background-color, white));
         border-radius: var(--ha-card-border-radius, 2px);
-        box-shadow: var(
-          --ha-card-box-shadow,
-          0 2px 2px 0 rgba(0, 0, 0, 0.14),
-          0 1px 5px 0 rgba(0, 0, 0, 0.12),
-          0 3px 1px -2px rgba(0, 0, 0, 0.2)
-        );
+        box-shadow: var(--ha-card-box-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2));
         color: var(--primary-text-color);
         display: block;
         transition: all 0.3s ease-out;
@@ -151,7 +154,7 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
         width: 382px;
       }
       .player__container {
-        margin:0;
+        margin: 0;
         background: #fff;
         border-radius: 12px;
         box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
@@ -163,7 +166,7 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
 
       .body__cover img {
         max-width: 100%;
-        width:100%;
+        width: 100%;
         border-radius: 0.25rem;
       }
 
@@ -183,23 +186,22 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
         padding-left: 2rem;
       }
 
-
       .list--footer {
         justify-content: space-between;
       }
       .list--footer li:last-child {
-        flex:1;
-        display:flex;
+        flex: 1;
+        display: flex;
         flex-direction: row;
-        margin-left:15px;
+        margin-left: 15px;
       }
       .list--footer li:last-child input {
-        flex:1;
+        flex: 1;
       }
       .list--footer li:last-child ha-icon {
-        margin:0 5px;
+        margin: 0 5px;
         color: #888;
-        font-size:16px;
+        font-size: 16px;
       }
 
       .volumeRange {
@@ -209,12 +211,10 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
         background: #d3d3d3;
         outline: none;
         opacity: 0.7;
-        -webkit-transition: .2s;
-        transition: opacity .2s;
+        -webkit-transition: 0.2s;
+        transition: opacity 0.2s;
         margin: 6px 5px 0 5px;
       }
-
-
 
       .list--cover {
         justify-content: flex-end;
@@ -227,14 +227,14 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
 
       .list--cover {
         position: absolute;
-        top: .5rem;
+        top: 0.5rem;
         width: 100%;
       }
       .list--cover li:first-of-type {
-        margin-left: .75rem;
+        margin-left: 0.75rem;
       }
       .list--cover li:last-of-type {
-        margin-right: .75rem;
+        margin-right: 0.75rem;
       }
       .list--cover a {
         font-size: 1.15rem;
@@ -253,8 +253,9 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
         border-radius: 0.25rem;
         cursor: pointer;
       }
-      .range:before, .range:after {
-        content: "";
+      .range:before,
+      .range:after {
+        content: '';
         position: absolute;
         cursor: pointer;
       }
@@ -278,7 +279,8 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
         -webkit-transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
         transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
       }
-      .range:focus:after, .range:hover:after {
+      .range:focus:after,
+      .range:hover:after {
         background: rgba(211, 3, 32, 0.95);
       }
 
@@ -290,7 +292,7 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
 
       .info__album,
       .info__song {
-        margin-bottom: .5rem;
+        margin-bottom: 0.5rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -298,7 +300,7 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
 
       .info__artist,
       .info__album {
-        font-size: .75rem;
+        font-size: 0.75rem;
         font-weight: 300;
         color: #666;
       }
@@ -332,51 +334,54 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
         justify-content: center;
       }
 
-      .list--buttons li:nth-of-type(n+2) {
+      .list--buttons li:nth-of-type(n + 2) {
         margin-left: 1.25rem;
       }
 
       .list--buttons a {
-        padding-top: .45rem;
-        padding-right: .75rem;
-        padding-bottom: .45rem;
-        padding-left: .75rem;
+        padding-top: 0.45rem;
+        padding-right: 0.75rem;
+        padding-bottom: 0.45rem;
+        padding-left: 0.75rem;
         font-size: 1rem;
         border-radius: 50%;
         box-shadow: 0 3px 6px rgba(33, 33, 33, 0.1), 0 3px 12px rgba(33, 33, 33, 0.15);
       }
-      .list--buttons a:focus, .list--buttons a:hover {
+      .list--buttons a:focus,
+      .list--buttons a:hover {
         color: rgba(171, 2, 26, 0.95);
         opacity: 1;
         box-shadow: 0 6px 9px rgba(33, 33, 33, 0.1), 0 6px 16px rgba(33, 33, 33, 0.15);
       }
 
       .list--buttons li.middle a {
-        padding: .82rem;
-        margin-left: .5rem;
-        font-size: 1.25rem!important;
-        color: rgba(211, 3, 32, 0.95)!important;
-        opacity:1!important;
+        padding: 0.82rem;
+        margin-left: 0.5rem;
+        font-size: 1.25rem !important;
+        color: rgba(211, 3, 32, 0.95) !important;
+        opacity: 1 !important;
       }
 
       .list--buttons li:first-of-type a,
       .list--buttons li:last-of-type a {
-        font-size: .95rem;
+        font-size: 0.95rem;
         color: #212121;
-        opacity: .5;
+        opacity: 0.5;
       }
-      .list--buttons li:first-of-type a:focus, .list--buttons li:first-of-type a:hover,
+      .list--buttons li:first-of-type a:focus,
+      .list--buttons li:first-of-type a:hover,
       .list--buttons li:last-of-type a:focus,
       .list--buttons li:last-of-type a:hover {
         color: #d30320;
-        opacity: .75;
+        opacity: 0.75;
       }
 
       .list__link {
         -webkit-transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
         transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
       }
-      .list__link:focus, .list__link:hover {
+      .list__link:focus,
+      .list__link:hover {
         color: #d30320;
       }
 
@@ -386,19 +391,20 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
       }
 
       .list--footer a {
-        opacity: .5;
+        opacity: 0.5;
       }
-      .list--footer a:focus, .list--footer a:hover {
-        opacity: .9;
+      .list--footer a:focus,
+      .list--footer a:hover {
+        opacity: 0.9;
       }
 
       .shuffle.active {
         color: #d30320;
-        opacity:0.9;
+        opacity: 0.9;
       }
 
       .center {
-        margin:2rem auto;
+        margin: 2rem auto;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -410,8 +416,8 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
         width: auto;
       }
       .groups > .group {
-        padding:0;
-        margin:0;
+        padding: 0;
+        margin: 0;
       }
       .group .wrap {
         cursor: pointer;
@@ -497,7 +503,7 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
         position: absolute;
         width: 4px;
         animation: sound 0ms -800ms linear infinite alternate;
-        display:block;
+        display: block;
       }
 
       .group .player .bar:nth-child(1) {
@@ -520,7 +526,6 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
         animation-duration: 407ms;
       }
 
-
       .group .wrap .inner-wrap span.name,
       .group .wrap .inner-wrap span.state {
         color: rgb(0, 0, 0);
@@ -532,13 +537,13 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
         padding: 0;
       }
       ul.members {
-        list-style:none;
-        padding:0;
-        margin:0;
+        list-style: none;
+        padding: 0;
+        margin: 0;
       }
       ul.members > li {
-        padding:0;
-        margin:0;
+        padding: 0;
+        margin: 0;
       }
       ul.members > li .member {
         cursor: pointer;
@@ -596,9 +601,9 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
         padding: 0;
       }
       ul.favorites > li {
-        padding:0;
-        margin:0;
-        display:inline-block;
+        padding: 0;
+        margin: 0;
+        display: inline-block;
       }
       ul.favorites > li .favorite {
         cursor: pointer;
@@ -652,10 +657,9 @@ var Z,Y;null==K||K(O,D),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:glo
         overflow: hidden;
       }
 
-
       @keyframes sound {
         0% {
-          opacity: .35;
+          opacity: 0.35;
           height: 3px;
         }
         100% {

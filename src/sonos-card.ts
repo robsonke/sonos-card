@@ -1,4 +1,4 @@
-import { css, html, LitElement } from "lit";
+import { css, html, LitElement } from 'lit';
 
 class SonosCard extends LitElement {
   config: any;
@@ -10,7 +10,7 @@ class SonosCard extends LitElement {
     return {
       hass: {},
       config: {},
-      active: {}
+      active: {},
     };
   }
 
@@ -27,7 +27,7 @@ class SonosCard extends LitElement {
       //Get favorites list
       if (first) {
         first = false;
-        for(const favorite of stateObj.attributes.source_list) {
+        for (const favorite of stateObj.attributes.source_list) {
           favorites.push(favorite);
         }
       }
@@ -36,7 +36,7 @@ class SonosCard extends LitElement {
 
       if (stateObj.attributes.sonos_group.length > 1 && stateObj.attributes.sonos_group[0] == entity) {
         if (stateObj.state == 'playing' && this.active == '') {
-            this.active = entity;
+          this.active = entity;
         }
       } else if (stateObj.attributes.sonos_group.length == 1) {
         if (stateObj.state == 'playing' && this.active == '') {
@@ -48,116 +48,132 @@ class SonosCard extends LitElement {
     return html`
       <div class="center">
         <div class="groups">
-        ${this.config.entities.map(entity => {
-          const stateObj = this.hass.states[entity];
-          if (stateObj.attributes.sonos_group.length == 1 || (stateObj.attributes.sonos_group.length > 1 && stateObj.attributes.sonos_group[0] == entity)) {
-            return html`
-              <div class="group" data-entity="${entity}">
-                <div class="wrap ${this.active == entity? 'active':''}">
-                  <div class="inner-wrap">
-                    <span class="icon" style="">
-                      <div class="player ${stateObj.state == 'playing'? 'active':''}">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                      </div>
-                    </span>
-                    ${stateObj.attributes.sonos_group.map(speaker => {
-                        return html `<span class="name">${speakerNames[speaker]}</span>`;
-                    })}
-                    <span class="state">${stateObj.attributes.media_artist} - ${stateObj.attributes.media_title}</span>
+          ${this.config.entities.map((entity) => {
+            const stateObj = this.hass.states[entity];
+            if (stateObj.attributes.sonos_group.length == 1 || (stateObj.attributes.sonos_group.length > 1 && stateObj.attributes.sonos_group[0] == entity)) {
+              return html`
+                <div class="group" data-entity="${entity}">
+                  <div class="wrap ${this.active == entity ? 'active' : ''}">
+                    <div class="inner-wrap">
+                      <span class="icon" style="">
+                        <div class="player ${stateObj.state == 'playing' ? 'active' : ''}">
+                          <div class="bar"></div>
+                          <div class="bar"></div>
+                          <div class="bar"></div>
+                        </div>
+                      </span>
+                      ${stateObj.attributes.sonos_group.map((speaker) => {
+                        return html`<span class="name">${speakerNames[speaker]}</span>`;
+                      })}
+                      <span class="state">${stateObj.attributes.media_artist} - ${stateObj.attributes.media_title}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            `;
-          } else {
-            return html``;
-          }
-        })}
+              `;
+            } else {
+              return html``;
+            }
+          })}
         </div>
 
         <div class="players">
-        ${this.active != ''?
-          html`
-            <div class="player__container">
-              <div class="player__body">
-                  <div class="body__cover">
-                  </div>
-                  <div class="body__info">
+          ${this.active != ''
+            ? html`
+                <div class="player__container">
+                  <div class="player__body">
+                    <div class="body__cover"></div>
+                    <div class="body__info">
                       <div class="info__album">${this.hass.states[this.active].attributes.media_album_name}</div>
                       <div class="info__song">${this.hass.states[this.active].attributes.media_title}</div>
                       <div class="info__artist">${this.hass.states[this.active].attributes.media_artist}</div>
-                  </div>
-                  <div class="body__buttons">
+                    </div>
+                    <div class="body__buttons">
                       <ul class="list list--buttons">
-                          <li class="middle"><a class="list__link">
-                              ${this.hass.states[this.active].state != 'playing' ? html`<ha-icon @click="${() => this._play(this.active)}" .icon=${"mdi:play"}></ha-icon>` : html`<ha-icon @click="${() => this._pause(this.active)}" .icon=${"mdi:stop"}></ha-icon>`}
-
-                          </a></li>
+                        <li class="middle">
+                          <a class="list__link">
+                            ${this.hass.states[this.active].state != 'playing'
+                              ? html`<ha-icon @click="${() => this._play(this.active)}" .icon=${'mdi:play'}></ha-icon>`
+                              : html`<ha-icon @click="${() => this._pause(this.active)}" .icon=${'mdi:stop'}></ha-icon>`}
+                          </a>
+                        </li>
                       </ul>
+                    </div>
                   </div>
-              </div>
-              <div class="player__footer">
-                  <ul class="list list--footer">
-                      <li><ha-icon @click="${() => this._volumeDown(this.active)}" .icon=${"mdi:volume-minus"}></ha-icon><input type="range" .value="${100 * this.hass.states[this.active].attributes.volume_level}" @change=${e => this._volumeSet(this.active, e.target.value)} min="0" max="100" id="volumeRange" class="volumeRange" style="background: linear-gradient(to right, rgb(211, 3, 32) 0%, rgb(211, 3, 32) ${100 * this.hass.states[this.active].attributes.volume_level}%, rgb(211, 211, 211) ${100 * this.hass.states[this.active].attributes.volume_level}%, rgb(211, 211, 211) 100%);"><ha-icon @click="${() => this._volumeUp(this.active)}" .icon=${"mdi:volume-plus"}></ha-icon></li>
-                  </ul>
-              </div>
-            </div>
-          `
-          :html``}
+                  <div class="player__footer">
+                    <ul class="list list--footer">
+                      <li>
+                        <ha-icon @click="${() => this._volumeDown(this.active)}" .icon=${'mdi:volume-minus'}></ha-icon
+                        ><input
+                          type="range"
+                          .value="${100 * this.hass.states[this.active].attributes.volume_level}"
+                          @change=${(e) => this._volumeSet(this.active, e.target.value)}
+                          min="0"
+                          max="100"
+                          id="volumeRange"
+                          class="volumeRange"
+                          style="background: linear-gradient(to right, rgb(211, 3, 32) 0%, rgb(211, 3, 32) ${100 * this.hass.states[this.active].attributes.volume_level}%, rgb(211, 211, 211) ${100 *
+                          this.hass.states[this.active].attributes.volume_level}%, rgb(211, 211, 211) 100%);"
+                        /><ha-icon @click="${() => this._volumeUp(this.active)}" .icon=${'mdi:volume-plus'}></ha-icon>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              `
+            : html``}
         </div>
 
         <div class="sidebar">
           <ul class="members">
-            ${this.active != '' ? html`${this.hass.states[this.active].attributes.sonos_group.map(entity => {
-              if(entity != this.active) {
-              return html`
-                <li>
-                  <div class="member unjoin-member" data-member="${entity}" @click="${e => this._unjoin(e)}">
-                    <div class="member-inner">
-                      <ha-icon .icon=${"mdi:minus"}></ha-icon>
-                      <span>${speakerNames[entity]} </span>
-                    </div>
-                  </div>
-                </li>
-              `;
-              } else {
-                return html``;
-              }
-            })}
-            ${this.config.entities.map(entity => {
-              if(entity != this.active && !this.hass.states[this.active].attributes.sonos_group.includes(entity)) {
-                return html`
-                  <li>
-                    <div class="member join-member" data-member="${entity}" @click="${e => this._join(e)}">
-                      <div class="member-inner">
-                        <ha-icon .icon=${"mdi:plus"}></ha-icon>
-                        <span>${speakerNames[entity]} </span>
-                      </div>
-                    </div>
-                  </li>
-                `;
-              } else {
-                return html``;
-              }
-            })}`: html ``}
+            ${this.active != ''
+              ? html`${this.hass.states[this.active].attributes.sonos_group.map((entity) => {
+                  if (entity != this.active) {
+                    return html`
+                      <li>
+                        <div class="member unjoin-member" data-member="${entity}" @click="${(e) => this._unjoin(e)}">
+                          <div class="member-inner">
+                            <ha-icon .icon=${'mdi:minus'}></ha-icon>
+                            <span>${speakerNames[entity]} </span>
+                          </div>
+                        </div>
+                      </li>
+                    `;
+                  } else {
+                    return html``;
+                  }
+                })}
+                ${this.config.entities.map((entity) => {
+                  if (entity != this.active && !this.hass.states[this.active].attributes.sonos_group.includes(entity)) {
+                    return html`
+                      <li>
+                        <div class="member join-member" data-member="${entity}" @click="${(e) => this._join(e)}">
+                          <div class="member-inner">
+                            <ha-icon .icon=${'mdi:plus'}></ha-icon>
+                            <span>${speakerNames[entity]} </span>
+                          </div>
+                        </div>
+                      </li>
+                    `;
+                  } else {
+                    return html``;
+                  }
+                })}`
+              : html``}
           </ul>
         </div>
       </div>
       <div class="center">
         <ul class="favorites">
-          ${favorites.map(favorite => {
+          ${favorites.map((favorite) => {
             return html`
               <li>
-                <div class="favorite" data-favorite="${favorite}" @click="${e => this._sourceSet(e)}">
+                <div class="favorite" data-favorite="${favorite}" @click="${(e) => this._sourceSet(e)}">
                   <div class="favorite-inner">
                     <span class="icon" style="">
-                      <ha-icon .icon=${"mdi:play"}></ha-icon>
+                      <ha-icon .icon=${'mdi:play'}></ha-icon>
                     </span>
                     <span class="name">${favorite}</span>
                   </div>
                 </div>
-
               </li>
             `;
           })}
@@ -168,107 +184,104 @@ class SonosCard extends LitElement {
 
   updated() {
     //Set active player
-    this.shadowRoot.querySelectorAll(".group").forEach(group => {
+    this.shadowRoot.querySelectorAll('.group').forEach((group) => {
       group.addEventListener('click', () => {
-          this.active = group.dataset.entity;
-      })
-  });
+        this.active = group.dataset.entity;
+      });
+    });
   }
 
   _pause(entity) {
-    this.hass.callService("media_player", "media_pause", {
-        entity_id: entity
+    this.hass.callService('media_player', 'media_pause', {
+      entity_id: entity,
     });
   }
 
   _play(entity) {
-    this.hass.callService("media_player", "media_play", {
-        entity_id: entity
+    this.hass.callService('media_player', 'media_play', {
+      entity_id: entity,
     });
   }
 
   _volumeDown(entity) {
-    this.hass.callService("media_player", "volume_down", {
-        entity_id: entity
+    this.hass.callService('media_player', 'volume_down', {
+      entity_id: entity,
     });
 
     for (const member in this.hass.states[entity].sonos_group) {
       if (member != entity) {
-        this.hass.callService("media_player", "volume_down", {
-            entity_id: member
+        this.hass.callService('media_player', 'volume_down', {
+          entity_id: member,
         });
       }
     }
-
   }
 
   _volumeUp(entity) {
-    this.hass.callService("media_player", "volume_up", {
-        entity_id: entity
+    this.hass.callService('media_player', 'volume_up', {
+      entity_id: entity,
     });
 
     for (const member in this.hass.states[entity].sonos_group) {
       if (member != entity) {
-        this.hass.callService("media_player", "volume_up", {
-            entity_id: member
+        this.hass.callService('media_player', 'volume_up', {
+          entity_id: member,
         });
       }
     }
   }
 
   _volumeSet(entity, volume) {
-    const volumeFloat = volume/100;
-    this.hass.callService("media_player", "volume_set", {
-        entity_id: entity,
-        volume_level: volumeFloat
+    const volumeFloat = volume / 100;
+    this.hass.callService('media_player', 'volume_set', {
+      entity_id: entity,
+      volume_level: volumeFloat,
     });
 
     for (const member in this.hass.states[entity].sonos_group) {
       if (member != entity) {
-        this.hass.callService("media_player", "volume_set", {
-            entity_id: member,
-            volume_level: volumeFloat
+        this.hass.callService('media_player', 'volume_set', {
+          entity_id: member,
+          volume_level: volumeFloat,
         });
       }
     }
   }
 
   _sourceSet(e) {
-    if(e.target.dataset && e.target.dataset.favorite) {
+    if (e.target.dataset && e.target.dataset.favorite) {
       console.log(this.active);
       console.log(e.target.dataset.favorite);
-      this.hass.callService("media_player", "select_source", {
+      this.hass.callService('media_player', 'select_source', {
         source: e.target.dataset.favorite,
-        entity_id: this.active
+        entity_id: this.active,
       });
     }
-
   }
   _join(e) {
-    if(e.target.dataset && e.target.dataset.member) {
+    if (e.target.dataset && e.target.dataset.member) {
       console.log(this.active);
       console.log(e.target.dataset.member);
-      this.hass.callService("sonos", "join", {
+      this.hass.callService('sonos', 'join', {
         master: this.active,
-        entity_id: e.target.dataset.member
+        entity_id: e.target.dataset.member,
       });
     }
-
   }
   _unjoin(e) {
-    if(e.target.dataset && e.target.dataset.member) {
+    if (e.target.dataset && e.target.dataset.member) {
       console.log(this.active);
       console.log(e.target.dataset.member);
-      this.hass.callService("sonos", "unjoin", {
+      this.hass.callService('sonos', 'unjoin', {
         master: this.active,
-        entity_id: e.target.dataset.member
+        entity_id: e.target.dataset.member,
       });
     }
   }
 
   setConfig(config) {
     if (!config.entities) {
-      throw new Error("You need to define entities");
+      throw new Error('You need to define entities');
     }
     this.config = config;
   }
@@ -280,17 +293,9 @@ class SonosCard extends LitElement {
   static get styles() {
     return css`
       ha-card {
-        background: var(
-          --ha-card-background,
-          var(--paper-card-background-color, white)
-        );
+        background: var(--ha-card-background, var(--paper-card-background-color, white));
         border-radius: var(--ha-card-border-radius, 2px);
-        box-shadow: var(
-          --ha-card-box-shadow,
-          0 2px 2px 0 rgba(0, 0, 0, 0.14),
-          0 1px 5px 0 rgba(0, 0, 0, 0.12),
-          0 3px 1px -2px rgba(0, 0, 0, 0.2)
-        );
+        box-shadow: var(--ha-card-box-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2));
         color: var(--primary-text-color);
         display: block;
         transition: all 0.3s ease-out;
@@ -316,7 +321,7 @@ class SonosCard extends LitElement {
         width: 382px;
       }
       .player__container {
-        margin:0;
+        margin: 0;
         background: #fff;
         border-radius: 12px;
         box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
@@ -328,7 +333,7 @@ class SonosCard extends LitElement {
 
       .body__cover img {
         max-width: 100%;
-        width:100%;
+        width: 100%;
         border-radius: 0.25rem;
       }
 
@@ -348,23 +353,22 @@ class SonosCard extends LitElement {
         padding-left: 2rem;
       }
 
-
       .list--footer {
         justify-content: space-between;
       }
       .list--footer li:last-child {
-        flex:1;
-        display:flex;
+        flex: 1;
+        display: flex;
         flex-direction: row;
-        margin-left:15px;
+        margin-left: 15px;
       }
       .list--footer li:last-child input {
-        flex:1;
+        flex: 1;
       }
       .list--footer li:last-child ha-icon {
-        margin:0 5px;
+        margin: 0 5px;
         color: #888;
-        font-size:16px;
+        font-size: 16px;
       }
 
       .volumeRange {
@@ -374,12 +378,10 @@ class SonosCard extends LitElement {
         background: #d3d3d3;
         outline: none;
         opacity: 0.7;
-        -webkit-transition: .2s;
-        transition: opacity .2s;
+        -webkit-transition: 0.2s;
+        transition: opacity 0.2s;
         margin: 6px 5px 0 5px;
       }
-
-
 
       .list--cover {
         justify-content: flex-end;
@@ -392,14 +394,14 @@ class SonosCard extends LitElement {
 
       .list--cover {
         position: absolute;
-        top: .5rem;
+        top: 0.5rem;
         width: 100%;
       }
       .list--cover li:first-of-type {
-        margin-left: .75rem;
+        margin-left: 0.75rem;
       }
       .list--cover li:last-of-type {
-        margin-right: .75rem;
+        margin-right: 0.75rem;
       }
       .list--cover a {
         font-size: 1.15rem;
@@ -418,8 +420,9 @@ class SonosCard extends LitElement {
         border-radius: 0.25rem;
         cursor: pointer;
       }
-      .range:before, .range:after {
-        content: "";
+      .range:before,
+      .range:after {
+        content: '';
         position: absolute;
         cursor: pointer;
       }
@@ -443,7 +446,8 @@ class SonosCard extends LitElement {
         -webkit-transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
         transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
       }
-      .range:focus:after, .range:hover:after {
+      .range:focus:after,
+      .range:hover:after {
         background: rgba(211, 3, 32, 0.95);
       }
 
@@ -455,7 +459,7 @@ class SonosCard extends LitElement {
 
       .info__album,
       .info__song {
-        margin-bottom: .5rem;
+        margin-bottom: 0.5rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -463,7 +467,7 @@ class SonosCard extends LitElement {
 
       .info__artist,
       .info__album {
-        font-size: .75rem;
+        font-size: 0.75rem;
         font-weight: 300;
         color: #666;
       }
@@ -497,51 +501,54 @@ class SonosCard extends LitElement {
         justify-content: center;
       }
 
-      .list--buttons li:nth-of-type(n+2) {
+      .list--buttons li:nth-of-type(n + 2) {
         margin-left: 1.25rem;
       }
 
       .list--buttons a {
-        padding-top: .45rem;
-        padding-right: .75rem;
-        padding-bottom: .45rem;
-        padding-left: .75rem;
+        padding-top: 0.45rem;
+        padding-right: 0.75rem;
+        padding-bottom: 0.45rem;
+        padding-left: 0.75rem;
         font-size: 1rem;
         border-radius: 50%;
         box-shadow: 0 3px 6px rgba(33, 33, 33, 0.1), 0 3px 12px rgba(33, 33, 33, 0.15);
       }
-      .list--buttons a:focus, .list--buttons a:hover {
+      .list--buttons a:focus,
+      .list--buttons a:hover {
         color: rgba(171, 2, 26, 0.95);
         opacity: 1;
         box-shadow: 0 6px 9px rgba(33, 33, 33, 0.1), 0 6px 16px rgba(33, 33, 33, 0.15);
       }
 
       .list--buttons li.middle a {
-        padding: .82rem;
-        margin-left: .5rem;
-        font-size: 1.25rem!important;
-        color: rgba(211, 3, 32, 0.95)!important;
-        opacity:1!important;
+        padding: 0.82rem;
+        margin-left: 0.5rem;
+        font-size: 1.25rem !important;
+        color: rgba(211, 3, 32, 0.95) !important;
+        opacity: 1 !important;
       }
 
       .list--buttons li:first-of-type a,
       .list--buttons li:last-of-type a {
-        font-size: .95rem;
+        font-size: 0.95rem;
         color: #212121;
-        opacity: .5;
+        opacity: 0.5;
       }
-      .list--buttons li:first-of-type a:focus, .list--buttons li:first-of-type a:hover,
+      .list--buttons li:first-of-type a:focus,
+      .list--buttons li:first-of-type a:hover,
       .list--buttons li:last-of-type a:focus,
       .list--buttons li:last-of-type a:hover {
         color: #d30320;
-        opacity: .75;
+        opacity: 0.75;
       }
 
       .list__link {
         -webkit-transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
         transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
       }
-      .list__link:focus, .list__link:hover {
+      .list__link:focus,
+      .list__link:hover {
         color: #d30320;
       }
 
@@ -551,19 +558,20 @@ class SonosCard extends LitElement {
       }
 
       .list--footer a {
-        opacity: .5;
+        opacity: 0.5;
       }
-      .list--footer a:focus, .list--footer a:hover {
-        opacity: .9;
+      .list--footer a:focus,
+      .list--footer a:hover {
+        opacity: 0.9;
       }
 
       .shuffle.active {
         color: #d30320;
-        opacity:0.9;
+        opacity: 0.9;
       }
 
       .center {
-        margin:2rem auto;
+        margin: 2rem auto;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -575,8 +583,8 @@ class SonosCard extends LitElement {
         width: auto;
       }
       .groups > .group {
-        padding:0;
-        margin:0;
+        padding: 0;
+        margin: 0;
       }
       .group .wrap {
         cursor: pointer;
@@ -662,7 +670,7 @@ class SonosCard extends LitElement {
         position: absolute;
         width: 4px;
         animation: sound 0ms -800ms linear infinite alternate;
-        display:block;
+        display: block;
       }
 
       .group .player .bar:nth-child(1) {
@@ -685,7 +693,6 @@ class SonosCard extends LitElement {
         animation-duration: 407ms;
       }
 
-
       .group .wrap .inner-wrap span.name,
       .group .wrap .inner-wrap span.state {
         color: rgb(0, 0, 0);
@@ -697,13 +704,13 @@ class SonosCard extends LitElement {
         padding: 0;
       }
       ul.members {
-        list-style:none;
-        padding:0;
-        margin:0;
+        list-style: none;
+        padding: 0;
+        margin: 0;
       }
       ul.members > li {
-        padding:0;
-        margin:0;
+        padding: 0;
+        margin: 0;
       }
       ul.members > li .member {
         cursor: pointer;
@@ -761,9 +768,9 @@ class SonosCard extends LitElement {
         padding: 0;
       }
       ul.favorites > li {
-        padding:0;
-        margin:0;
-        display:inline-block;
+        padding: 0;
+        margin: 0;
+        display: inline-block;
       }
       ul.favorites > li .favorite {
         cursor: pointer;
@@ -817,10 +824,9 @@ class SonosCard extends LitElement {
         overflow: hidden;
       }
 
-
       @keyframes sound {
         0% {
-          opacity: .35;
+          opacity: 0.35;
           height: 3px;
         }
         100% {
@@ -830,7 +836,6 @@ class SonosCard extends LitElement {
       }
     `;
   }
-
 }
 
 customElements.define('sonos-card', SonosCard);
