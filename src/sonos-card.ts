@@ -1,9 +1,5 @@
-import { LitElement, html, css } from 'lit-element';
-import tinycolor, { TinyColor, isReadable } from '@ctrl/tinycolor';
-import { closePopUp } from 'card-tools/src/popup';
-import {
-  computeStateDisplay
-} from 'custom-card-helpers';
+import { css, html, LitElement } from "lit";
+
 class SonosCard extends LitElement {
   config: any;
   hass: any;
@@ -17,34 +13,33 @@ class SonosCard extends LitElement {
       active: {}
     };
   }
-  
+
   constructor() {
     super();
   }
-  
+
   render() {
-    var icon = "mdi-stop";
-    var speakerNames: any = [];
-    var favorites: any = [];
-    var first = true;
-    for(var entity of this.config.entities) {        
-      var stateObj = this.hass.states[entity];      
+    const speakerNames: any = [];
+    const favorites: any = [];
+    let first = true;
+    for (const entity of this.config.entities) {
+      const stateObj = this.hass.states[entity];
       //Get favorites list
-      if(first) {
+      if (first) {
         first = false;
-        for(var favorite of stateObj.attributes.source_list) {
+        for(const favorite of stateObj.attributes.source_list) {
           favorites.push(favorite);
         }
       }
-      //Get speakerNames    
+      //Get speakerNames
       speakerNames[entity] = stateObj.attributes.friendly_name;
-  
-      if(stateObj.attributes.sonos_group.length > 1 && stateObj.attributes.sonos_group[0] == entity) {
-        if(stateObj.state == 'playing' && this.active == '') {
+
+      if (stateObj.attributes.sonos_group.length > 1 && stateObj.attributes.sonos_group[0] == entity) {
+        if (stateObj.state == 'playing' && this.active == '') {
             this.active = entity;
         }
-      } else if(stateObj.attributes.sonos_group.length == 1) {
-        if(stateObj.state == 'playing' && this.active == '') {
+      } else if (stateObj.attributes.sonos_group.length == 1) {
+        if (stateObj.state == 'playing' && this.active == '') {
           this.active = entity;
         }
       }
@@ -54,8 +49,8 @@ class SonosCard extends LitElement {
       <div class="center">
         <div class="groups">
         ${this.config.entities.map(entity => {
-          var stateObj = this.hass.states[entity];
-          if(stateObj.attributes.sonos_group.length == 1 || (stateObj.attributes.sonos_group.length > 1 && stateObj.attributes.sonos_group[0] == entity)) {
+          const stateObj = this.hass.states[entity];
+          if (stateObj.attributes.sonos_group.length == 1 || (stateObj.attributes.sonos_group.length > 1 && stateObj.attributes.sonos_group[0] == entity)) {
             return html`
               <div class="group" data-entity="${entity}">
                 <div class="wrap ${this.active == entity? 'active':''}">
@@ -97,7 +92,7 @@ class SonosCard extends LitElement {
                       <ul class="list list--buttons">
                           <li class="middle"><a class="list__link">
                               ${this.hass.states[this.active].state != 'playing' ? html`<ha-icon @click="${() => this._play(this.active)}" .icon=${"mdi:play"}></ha-icon>` : html`<ha-icon @click="${() => this._pause(this.active)}" .icon=${"mdi:stop"}></ha-icon>`}
-                          
+
                           </a></li>
                       </ul>
                   </div>
@@ -162,7 +157,7 @@ class SonosCard extends LitElement {
                     <span class="name">${favorite}</span>
                   </div>
                 </div>
-              
+
               </li>
             `;
           })}
@@ -170,7 +165,7 @@ class SonosCard extends LitElement {
       </div>
     `;
   }
-  
+
   updated() {
     //Set active player
     this.shadowRoot.querySelectorAll(".group").forEach(group => {
@@ -185,55 +180,55 @@ class SonosCard extends LitElement {
         entity_id: entity
     });
   }
-  
+
   _play(entity) {
     this.hass.callService("media_player", "media_play", {
         entity_id: entity
     });
   }
-  
+
   _volumeDown(entity) {
     this.hass.callService("media_player", "volume_down", {
         entity_id: entity
     });
 
-    for(var member in this.hass.states[entity].sonos_group) {
-      if(member != entity) {
+    for (const member in this.hass.states[entity].sonos_group) {
+      if (member != entity) {
         this.hass.callService("media_player", "volume_down", {
             entity_id: member
         });
       }
     }
-    
+
   }
-  
+
   _volumeUp(entity) {
     this.hass.callService("media_player", "volume_up", {
         entity_id: entity
-    }); 
-    
-    for(var member in this.hass.states[entity].sonos_group) {
-      if(member != entity) {
+    });
+
+    for (const member in this.hass.states[entity].sonos_group) {
+      if (member != entity) {
         this.hass.callService("media_player", "volume_up", {
             entity_id: member
         });
       }
     }
   }
-  
+
   _volumeSet(entity, volume) {
-    var volumeFloat = volume/100;
+    const volumeFloat = volume/100;
     this.hass.callService("media_player", "volume_set", {
         entity_id: entity,
         volume_level: volumeFloat
-    });  
-    
-    for(var member in this.hass.states[entity].sonos_group) {
-      if(member != entity) {
+    });
+
+    for (const member in this.hass.states[entity].sonos_group) {
+      if (member != entity) {
         this.hass.callService("media_player", "volume_set", {
             entity_id: member,
             volume_level: volumeFloat
-        });  
+        });
       }
     }
   }
@@ -247,7 +242,7 @@ class SonosCard extends LitElement {
         entity_id: this.active
       });
     }
-    
+
   }
   _join(e) {
     if(e.target.dataset && e.target.dataset.member) {
@@ -258,7 +253,7 @@ class SonosCard extends LitElement {
         entity_id: e.target.dataset.member
       });
     }
-    
+
   }
   _unjoin(e) {
     if(e.target.dataset && e.target.dataset.member) {
@@ -270,7 +265,7 @@ class SonosCard extends LitElement {
       });
     }
   }
-  
+
   setConfig(config) {
     if (!config.entities) {
       throw new Error("You need to define entities");
@@ -281,7 +276,7 @@ class SonosCard extends LitElement {
   getCardSize() {
     return 1;
   }
-  
+
   static get styles() {
     return css`
       ha-card {
@@ -472,7 +467,7 @@ class SonosCard extends LitElement {
         font-weight: 300;
         color: #666;
       }
-      
+
       .info__artist {
         white-space: nowrap;
         overflow: hidden;
@@ -586,7 +581,7 @@ class SonosCard extends LitElement {
       .group .wrap {
         cursor: pointer;
         display: inline-block;
-        width: 100px;
+        width: 150px;
         height: 100px;
         background-color: rgba(255, 255, 255, 0.8);
         box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
@@ -713,7 +708,7 @@ class SonosCard extends LitElement {
       ul.members > li .member {
         cursor: pointer;
         display: inline-block;
-        width: 100px;
+        width: 150px;
         height: 50px;
         background-color: rgba(255, 255, 255, 0.8);
         box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
@@ -834,8 +829,8 @@ class SonosCard extends LitElement {
         }
       }
     `;
-  }  
-  
+  }
+
 }
 
 customElements.define('sonos-card', SonosCard);
