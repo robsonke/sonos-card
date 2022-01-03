@@ -15,6 +15,8 @@ export const styles = css`
     --sns-artwork-opacity: 1;
     --sns-button-icon-color: var(--paper-item-icon-color, var(--primary-color, rgba(211, 3, 32, 0.95)));
 
+    --sns-player-background: #fff;
+
     background: var(--sns-card-background);
     border-radius: var(--sns-card-border-radius);
     box-shadow: var(--sns-card-box-shadow);
@@ -43,20 +45,35 @@ export const styles = css`
     width: 382px;
   }
   .player__container {
+    position: relative;
     margin: 0;
-    background: #fff;
+    background: var(--sns-player-background)#fff;
     border-radius: 12px;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
   }
 
-  .body__cover {
+  .player__body {
     position: relative;
   }
 
-  .body__cover img {
+  .body__cover {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+
+  .entity__cover {
+    display: block;
     max-width: 100%;
     width: 100%;
-    border-radius: 0.25rem;
+    opacity: 0.4;
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-radius: var(--ha-card-border-radius, 0);
+    overflow: hidden;
   }
 
   .list {
@@ -234,13 +251,13 @@ export const styles = css`
     padding-left: 0.75rem;
     font-size: 1rem;
     border-radius: 50%;
-    box-shadow: 0 3px 6px rgba(33, 33, 33, 0.1), 0 3px 12px rgba(33, 33, 33, 0.15);
+    //box-shadow: 0 3px 6px rgba(33, 33, 33, 0.1), 0 3px 12px rgba(33, 33, 33, 0.15);
   }
   .list--buttons a:focus,
   .list--buttons a:hover {
     color: var(--sns-button-icon-color);
     opacity: 1;
-    box-shadow: 0 6px 9px rgba(33, 33, 33, 0.1), 0 6px 16px rgba(33, 33, 33, 0.15);
+    //box-shadow: 0 6px 9px rgba(33, 33, 33, 0.1), 0 6px 16px rgba(33, 33, 33, 0.15);
   }
 
   .list--buttons li.middle a {
@@ -312,7 +329,7 @@ export const styles = css`
     cursor: pointer;
     display: inline-block;
     width: var(--sns-button-size-width);
-    height: var(--sns-button-size-height);
+    min-height: var(--sns-button-size-height);
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
     position: relative;
@@ -379,6 +396,24 @@ export const styles = css`
     text-overflow: ellipsis;
   }
 
+  div.inner-wrap span.cover-icon {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .entity__icon {
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 100%;
+    position: relative;
+  }
+
   .group .player {
     position: relative;
     width: 30px;
@@ -386,7 +421,7 @@ export const styles = css`
   }
 
   .group .player .bar {
-    background: #666;
+    background: var(--sns-button-icon-color);
     bottom: 1px;
     height: 3px;
     position: absolute;
@@ -555,4 +590,5 @@ export const styles = css`
       height: 20px;
     }
   }
+
 `;
