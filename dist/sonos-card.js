@@ -22,19 +22,19 @@ function t(t,e,i,s){var o,r=arguments.length,n=r<3?e:null===s?s=Object.getOwnPro
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */;var n;const a=window.trustedTypes,l=a?a.emptyScript:"",c=window.reactiveElementPolyfillSupport,h={toAttribute(t,e){switch(e){case Boolean:t=t?l:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},d=(t,e)=>e!==t&&(e==e||t==t),p={attribute:!0,type:String,converter:h,reflect:!1,hasChanged:d};class u extends HTMLElement{constructor(){super(),this._$Et=new Map,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Ei=null,this.o()}static addInitializer(t){var e;null!==(e=this.l)&&void 0!==e||(this.l=[]),this.l.push(t)}static get observedAttributes(){this.finalize();const t=[];return this.elementProperties.forEach(((e,i)=>{const s=this._$Eh(i,e);void 0!==s&&(this._$Eu.set(s,i),t.push(s))})),t}static createProperty(t,e=p){if(e.state&&(e.attribute=!1),this.finalize(),this.elementProperties.set(t,e),!e.noAccessor&&!this.prototype.hasOwnProperty(t)){const i="symbol"==typeof t?Symbol():"__"+t,s=this.getPropertyDescriptor(t,i,e);void 0!==s&&Object.defineProperty(this.prototype,t,s)}}static getPropertyDescriptor(t,e,i){return{get(){return this[e]},set(s){const o=this[t];this[e]=s,this.requestUpdate(t,o,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)||p}static finalize(){if(this.hasOwnProperty("finalized"))return!1;this.finalized=!0;const t=Object.getPrototypeOf(this);if(t.finalize(),this.elementProperties=new Map(t.elementProperties),this._$Eu=new Map,this.hasOwnProperty("properties")){const t=this.properties,e=[...Object.getOwnPropertyNames(t),...Object.getOwnPropertySymbols(t)];for(const i of e)this.createProperty(i,t[i])}return this.elementStyles=this.finalizeStyles(this.styles),!0}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(r(t))}else void 0!==t&&e.push(r(t));return e}static _$Eh(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}o(){var t;this._$Ep=new Promise((t=>this.enableUpdating=t)),this._$AL=new Map,this._$Em(),this.requestUpdate(),null===(t=this.constructor.l)||void 0===t||t.forEach((t=>t(this)))}addController(t){var e,i;(null!==(e=this._$Eg)&&void 0!==e?e:this._$Eg=[]).push(t),void 0!==this.renderRoot&&this.isConnected&&(null===(i=t.hostConnected)||void 0===i||i.call(t))}removeController(t){var e;null===(e=this._$Eg)||void 0===e||e.splice(this._$Eg.indexOf(t)>>>0,1)}_$Em(){this.constructor.elementProperties.forEach(((t,e)=>{this.hasOwnProperty(e)&&(this._$Et.set(e,this[e]),delete this[e])}))}createRenderRoot(){var t;const i=null!==(t=this.shadowRoot)&&void 0!==t?t:this.attachShadow(this.constructor.shadowRootOptions);return((t,i)=>{e?t.adoptedStyleSheets=i.map((t=>t instanceof CSSStyleSheet?t:t.styleSheet)):i.forEach((e=>{const i=document.createElement("style"),s=window.litNonce;void 0!==s&&i.setAttribute("nonce",s),i.textContent=e.cssText,t.appendChild(i)}))})(i,this.constructor.elementStyles),i}connectedCallback(){var t;void 0===this.renderRoot&&(this.renderRoot=this.createRenderRoot()),this.enableUpdating(!0),null===(t=this._$Eg)||void 0===t||t.forEach((t=>{var e;return null===(e=t.hostConnected)||void 0===e?void 0:e.call(t)}))}enableUpdating(t){}disconnectedCallback(){var t;null===(t=this._$Eg)||void 0===t||t.forEach((t=>{var e;return null===(e=t.hostDisconnected)||void 0===e?void 0:e.call(t)}))}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$ES(t,e,i=p){var s,o;const r=this.constructor._$Eh(t,i);if(void 0!==r&&!0===i.reflect){const n=(null!==(o=null===(s=i.converter)||void 0===s?void 0:s.toAttribute)&&void 0!==o?o:h.toAttribute)(e,i.type);this._$Ei=t,null==n?this.removeAttribute(r):this.setAttribute(r,n),this._$Ei=null}}_$AK(t,e){var i,s,o;const r=this.constructor,n=r._$Eu.get(t);if(void 0!==n&&this._$Ei!==n){const t=r.getPropertyOptions(n),a=t.converter,l=null!==(o=null!==(s=null===(i=a)||void 0===i?void 0:i.fromAttribute)&&void 0!==s?s:"function"==typeof a?a:null)&&void 0!==o?o:h.fromAttribute;this._$Ei=n,this[n]=l(e,t.type),this._$Ei=null}}requestUpdate(t,e,i){let s=!0;void 0!==t&&(((i=i||this.constructor.getPropertyOptions(t)).hasChanged||d)(this[t],e)?(this._$AL.has(t)||this._$AL.set(t,e),!0===i.reflect&&this._$Ei!==t&&(void 0===this._$E_&&(this._$E_=new Map),this._$E_.set(t,i))):s=!1),!this.isUpdatePending&&s&&(this._$Ep=this._$EC())}async _$EC(){this.isUpdatePending=!0;try{await this._$Ep}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){var t;if(!this.isUpdatePending)return;this.hasUpdated,this._$Et&&(this._$Et.forEach(((t,e)=>this[e]=t)),this._$Et=void 0);let e=!1;const i=this._$AL;try{e=this.shouldUpdate(i),e?(this.willUpdate(i),null===(t=this._$Eg)||void 0===t||t.forEach((t=>{var e;return null===(e=t.hostUpdate)||void 0===e?void 0:e.call(t)})),this.update(i)):this._$EU()}catch(t){throw e=!1,this._$EU(),t}e&&this._$AE(i)}willUpdate(t){}_$AE(t){var e;null===(e=this._$Eg)||void 0===e||e.forEach((t=>{var e;return null===(e=t.hostUpdated)||void 0===e?void 0:e.call(t)})),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EU(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$Ep}shouldUpdate(t){return!0}update(t){void 0!==this._$E_&&(this._$E_.forEach(((t,e)=>this._$ES(e,this[e],t))),this._$E_=void 0),this._$EU()}updated(t){}firstUpdated(t){}}
+ */;var n;const a=window.trustedTypes,l=a?a.emptyScript:"",c=window.reactiveElementPolyfillSupport,d={toAttribute(t,e){switch(e){case Boolean:t=t?l:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},h=(t,e)=>e!==t&&(e==e||t==t),p={attribute:!0,type:String,converter:d,reflect:!1,hasChanged:h};class u extends HTMLElement{constructor(){super(),this._$Et=new Map,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Ei=null,this.o()}static addInitializer(t){var e;null!==(e=this.l)&&void 0!==e||(this.l=[]),this.l.push(t)}static get observedAttributes(){this.finalize();const t=[];return this.elementProperties.forEach(((e,i)=>{const s=this._$Eh(i,e);void 0!==s&&(this._$Eu.set(s,i),t.push(s))})),t}static createProperty(t,e=p){if(e.state&&(e.attribute=!1),this.finalize(),this.elementProperties.set(t,e),!e.noAccessor&&!this.prototype.hasOwnProperty(t)){const i="symbol"==typeof t?Symbol():"__"+t,s=this.getPropertyDescriptor(t,i,e);void 0!==s&&Object.defineProperty(this.prototype,t,s)}}static getPropertyDescriptor(t,e,i){return{get(){return this[e]},set(s){const o=this[t];this[e]=s,this.requestUpdate(t,o,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)||p}static finalize(){if(this.hasOwnProperty("finalized"))return!1;this.finalized=!0;const t=Object.getPrototypeOf(this);if(t.finalize(),this.elementProperties=new Map(t.elementProperties),this._$Eu=new Map,this.hasOwnProperty("properties")){const t=this.properties,e=[...Object.getOwnPropertyNames(t),...Object.getOwnPropertySymbols(t)];for(const i of e)this.createProperty(i,t[i])}return this.elementStyles=this.finalizeStyles(this.styles),!0}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(r(t))}else void 0!==t&&e.push(r(t));return e}static _$Eh(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}o(){var t;this._$Ep=new Promise((t=>this.enableUpdating=t)),this._$AL=new Map,this._$Em(),this.requestUpdate(),null===(t=this.constructor.l)||void 0===t||t.forEach((t=>t(this)))}addController(t){var e,i;(null!==(e=this._$Eg)&&void 0!==e?e:this._$Eg=[]).push(t),void 0!==this.renderRoot&&this.isConnected&&(null===(i=t.hostConnected)||void 0===i||i.call(t))}removeController(t){var e;null===(e=this._$Eg)||void 0===e||e.splice(this._$Eg.indexOf(t)>>>0,1)}_$Em(){this.constructor.elementProperties.forEach(((t,e)=>{this.hasOwnProperty(e)&&(this._$Et.set(e,this[e]),delete this[e])}))}createRenderRoot(){var t;const i=null!==(t=this.shadowRoot)&&void 0!==t?t:this.attachShadow(this.constructor.shadowRootOptions);return((t,i)=>{e?t.adoptedStyleSheets=i.map((t=>t instanceof CSSStyleSheet?t:t.styleSheet)):i.forEach((e=>{const i=document.createElement("style"),s=window.litNonce;void 0!==s&&i.setAttribute("nonce",s),i.textContent=e.cssText,t.appendChild(i)}))})(i,this.constructor.elementStyles),i}connectedCallback(){var t;void 0===this.renderRoot&&(this.renderRoot=this.createRenderRoot()),this.enableUpdating(!0),null===(t=this._$Eg)||void 0===t||t.forEach((t=>{var e;return null===(e=t.hostConnected)||void 0===e?void 0:e.call(t)}))}enableUpdating(t){}disconnectedCallback(){var t;null===(t=this._$Eg)||void 0===t||t.forEach((t=>{var e;return null===(e=t.hostDisconnected)||void 0===e?void 0:e.call(t)}))}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$ES(t,e,i=p){var s,o;const r=this.constructor._$Eh(t,i);if(void 0!==r&&!0===i.reflect){const n=(null!==(o=null===(s=i.converter)||void 0===s?void 0:s.toAttribute)&&void 0!==o?o:d.toAttribute)(e,i.type);this._$Ei=t,null==n?this.removeAttribute(r):this.setAttribute(r,n),this._$Ei=null}}_$AK(t,e){var i,s,o;const r=this.constructor,n=r._$Eu.get(t);if(void 0!==n&&this._$Ei!==n){const t=r.getPropertyOptions(n),a=t.converter,l=null!==(o=null!==(s=null===(i=a)||void 0===i?void 0:i.fromAttribute)&&void 0!==s?s:"function"==typeof a?a:null)&&void 0!==o?o:d.fromAttribute;this._$Ei=n,this[n]=l(e,t.type),this._$Ei=null}}requestUpdate(t,e,i){let s=!0;void 0!==t&&(((i=i||this.constructor.getPropertyOptions(t)).hasChanged||h)(this[t],e)?(this._$AL.has(t)||this._$AL.set(t,e),!0===i.reflect&&this._$Ei!==t&&(void 0===this._$E_&&(this._$E_=new Map),this._$E_.set(t,i))):s=!1),!this.isUpdatePending&&s&&(this._$Ep=this._$EC())}async _$EC(){this.isUpdatePending=!0;try{await this._$Ep}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){var t;if(!this.isUpdatePending)return;this.hasUpdated,this._$Et&&(this._$Et.forEach(((t,e)=>this[e]=t)),this._$Et=void 0);let e=!1;const i=this._$AL;try{e=this.shouldUpdate(i),e?(this.willUpdate(i),null===(t=this._$Eg)||void 0===t||t.forEach((t=>{var e;return null===(e=t.hostUpdate)||void 0===e?void 0:e.call(t)})),this.update(i)):this._$EU()}catch(t){throw e=!1,this._$EU(),t}e&&this._$AE(i)}willUpdate(t){}_$AE(t){var e;null===(e=this._$Eg)||void 0===e||e.forEach((t=>{var e;return null===(e=t.hostUpdated)||void 0===e?void 0:e.call(t)})),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EU(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$Ep}shouldUpdate(t){return!0}update(t){void 0!==this._$E_&&(this._$E_.forEach(((t,e)=>this._$ES(e,this[e],t))),this._$E_=void 0),this._$EU()}updated(t){}firstUpdated(t){}}
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-var v;u.finalized=!0,u.elementProperties=new Map,u.elementStyles=[],u.shadowRootOptions={mode:"open"},null==c||c({ReactiveElement:u}),(null!==(n=globalThis.reactiveElementVersions)&&void 0!==n?n:globalThis.reactiveElementVersions=[]).push("1.0.2");const _=globalThis.trustedTypes,f=_?_.createPolicy("lit-html",{createHTML:t=>t}):void 0,g=`lit$${(Math.random()+"").slice(9)}$`,m="?"+g,b=`<${m}>`,$=document,y=(t="")=>$.createComment(t),w=t=>null===t||"object"!=typeof t&&"function"!=typeof t,x=Array.isArray,A=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,k=/-->/g,S=/>/g,C=/>|[ 	\n\r](?:([^\s"'>=/]+)([ 	\n\r]*=[ 	\n\r]*(?:[^ 	\n\r"'`<>=]|("|')|))|$)/g,E=/'/g,U=/"/g,z=/^(?:script|style|textarea)$/i,P=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),T=Symbol.for("lit-noChange"),N=Symbol.for("lit-nothing"),H=new WeakMap,O=$.createTreeWalker($,129,null,!1),R=(t,e)=>{const i=t.length-1,s=[];let o,r=2===e?"<svg>":"",n=A;for(let e=0;e<i;e++){const i=t[e];let a,l,c=-1,h=0;for(;h<i.length&&(n.lastIndex=h,l=n.exec(i),null!==l);)h=n.lastIndex,n===A?"!--"===l[1]?n=k:void 0!==l[1]?n=S:void 0!==l[2]?(z.test(l[2])&&(o=RegExp("</"+l[2],"g")),n=C):void 0!==l[3]&&(n=C):n===C?">"===l[0]?(n=null!=o?o:A,c=-1):void 0===l[1]?c=-2:(c=n.lastIndex-l[2].length,a=l[1],n=void 0===l[3]?C:'"'===l[3]?U:E):n===U||n===E?n=C:n===k||n===S?n=A:(n=C,o=void 0);const d=n===C&&t[e+1].startsWith("/>")?" ":"";r+=n===A?i+b:c>=0?(s.push(a),i.slice(0,c)+"$lit$"+i.slice(c)+g+d):i+g+(-2===c?(s.push(void 0),e):d)}const a=r+(t[i]||"<?>")+(2===e?"</svg>":"");return[void 0!==f?f.createHTML(a):a,s]};class M{constructor({strings:t,_$litType$:e},i){let s;this.parts=[];let o=0,r=0;const n=t.length-1,a=this.parts,[l,c]=R(t,e);if(this.el=M.createElement(l,i),O.currentNode=this.el.content,2===e){const t=this.el.content,e=t.firstChild;e.remove(),t.append(...e.childNodes)}for(;null!==(s=O.nextNode())&&a.length<n;){if(1===s.nodeType){if(s.hasAttributes()){const t=[];for(const e of s.getAttributeNames())if(e.endsWith("$lit$")||e.startsWith(g)){const i=c[r++];if(t.push(e),void 0!==i){const t=s.getAttribute(i.toLowerCase()+"$lit$").split(g),e=/([.?@])?(.*)/.exec(i);a.push({type:1,index:o,name:e[2],strings:t,ctor:"."===e[1]?B:"?"===e[1]?q:"@"===e[1]?K:L})}else a.push({type:6,index:o})}for(const e of t)s.removeAttribute(e)}if(z.test(s.tagName)){const t=s.textContent.split(g),e=t.length-1;if(e>0){s.textContent=_?_.emptyScript:"";for(let i=0;i<e;i++)s.append(t[i],y()),O.nextNode(),a.push({type:2,index:++o});s.append(t[e],y())}}}else if(8===s.nodeType)if(s.data===m)a.push({type:2,index:o});else{let t=-1;for(;-1!==(t=s.data.indexOf(g,t+1));)a.push({type:7,index:o}),t+=g.length-1}o++}}static createElement(t,e){const i=$.createElement("template");return i.innerHTML=t,i}}function j(t,e,i=t,s){var o,r,n,a;if(e===T)return e;let l=void 0!==s?null===(o=i._$Cl)||void 0===o?void 0:o[s]:i._$Cu;const c=w(e)?void 0:e._$litDirective$;return(null==l?void 0:l.constructor)!==c&&(null===(r=null==l?void 0:l._$AO)||void 0===r||r.call(l,!1),void 0===c?l=void 0:(l=new c(t),l._$AT(t,i,s)),void 0!==s?(null!==(n=(a=i)._$Cl)&&void 0!==n?n:a._$Cl=[])[s]=l:i._$Cu=l),void 0!==l&&(e=j(t,l._$AS(t,e.values),l,s)),e}class D{constructor(t,e){this.v=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}p(t){var e;const{el:{content:i},parts:s}=this._$AD,o=(null!==(e=null==t?void 0:t.creationScope)&&void 0!==e?e:$).importNode(i,!0);O.currentNode=o;let r=O.nextNode(),n=0,a=0,l=s[0];for(;void 0!==l;){if(n===l.index){let e;2===l.type?e=new I(r,r.nextSibling,this,t):1===l.type?e=new l.ctor(r,l.name,l.strings,this,t):6===l.type&&(e=new Y(r,this,t)),this.v.push(e),l=s[++a]}n!==(null==l?void 0:l.index)&&(r=O.nextNode(),n++)}return o}m(t){let e=0;for(const i of this.v)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class I{constructor(t,e,i,s){var o;this.type=2,this._$AH=N,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=s,this._$Cg=null===(o=null==s?void 0:s.isConnected)||void 0===o||o}get _$AU(){var t,e;return null!==(e=null===(t=this._$AM)||void 0===t?void 0:t._$AU)&&void 0!==e?e:this._$Cg}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=j(this,t,e),w(t)?t===N||null==t||""===t?(this._$AH!==N&&this._$AR(),this._$AH=N):t!==this._$AH&&t!==T&&this.$(t):void 0!==t._$litType$?this.T(t):void 0!==t.nodeType?this.S(t):(t=>{var e;return x(t)||"function"==typeof(null===(e=t)||void 0===e?void 0:e[Symbol.iterator])})(t)?this.M(t):this.$(t)}A(t,e=this._$AB){return this._$AA.parentNode.insertBefore(t,e)}S(t){this._$AH!==t&&(this._$AR(),this._$AH=this.A(t))}$(t){this._$AH!==N&&w(this._$AH)?this._$AA.nextSibling.data=t:this.S($.createTextNode(t)),this._$AH=t}T(t){var e;const{values:i,_$litType$:s}=t,o="number"==typeof s?this._$AC(t):(void 0===s.el&&(s.el=M.createElement(s.h,this.options)),s);if((null===(e=this._$AH)||void 0===e?void 0:e._$AD)===o)this._$AH.m(i);else{const t=new D(o,this),e=t.p(this.options);t.m(i),this.S(e),this._$AH=t}}_$AC(t){let e=H.get(t.strings);return void 0===e&&H.set(t.strings,e=new M(t)),e}M(t){x(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,s=0;for(const o of t)s===e.length?e.push(i=new I(this.A(y()),this.A(y()),this,this.options)):i=e[s],i._$AI(o),s++;s<e.length&&(this._$AR(i&&i._$AB.nextSibling,s),e.length=s)}_$AR(t=this._$AA.nextSibling,e){var i;for(null===(i=this._$AP)||void 0===i||i.call(this,!1,!0,e);t&&t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){var e;void 0===this._$AM&&(this._$Cg=t,null===(e=this._$AP)||void 0===e||e.call(this,t))}}class L{constructor(t,e,i,s,o){this.type=1,this._$AH=N,this._$AN=void 0,this.element=t,this.name=e,this._$AM=s,this.options=o,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=N}get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}_$AI(t,e=this,i,s){const o=this.strings;let r=!1;if(void 0===o)t=j(this,t,e,0),r=!w(t)||t!==this._$AH&&t!==T,r&&(this._$AH=t);else{const s=t;let n,a;for(t=o[0],n=0;n<o.length-1;n++)a=j(this,s[i+n],e,n),a===T&&(a=this._$AH[n]),r||(r=!w(a)||a!==this._$AH[n]),a===N?t=N:t!==N&&(t+=(null!=a?a:"")+o[n+1]),this._$AH[n]=a}r&&!s&&this.k(t)}k(t){t===N?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,null!=t?t:"")}}class B extends L{constructor(){super(...arguments),this.type=3}k(t){this.element[this.name]=t===N?void 0:t}}const V=_?_.emptyScript:"";class q extends L{constructor(){super(...arguments),this.type=4}k(t){t&&t!==N?this.element.setAttribute(this.name,V):this.element.removeAttribute(this.name)}}class K extends L{constructor(t,e,i,s,o){super(t,e,i,s,o),this.type=5}_$AI(t,e=this){var i;if((t=null!==(i=j(this,t,e,0))&&void 0!==i?i:N)===T)return;const s=this._$AH,o=t===N&&s!==N||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,r=t!==N&&(s===N||o);o&&this.element.removeEventListener(this.name,this,s),r&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){var e,i;"function"==typeof this._$AH?this._$AH.call(null!==(i=null===(e=this.options)||void 0===e?void 0:e.host)&&void 0!==i?i:this.element,t):this._$AH.handleEvent(t)}}class Y{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){j(this,t)}}const W=window.litHtmlPolyfillSupport;
+var v;u.finalized=!0,u.elementProperties=new Map,u.elementStyles=[],u.shadowRootOptions={mode:"open"},null==c||c({ReactiveElement:u}),(null!==(n=globalThis.reactiveElementVersions)&&void 0!==n?n:globalThis.reactiveElementVersions=[]).push("1.0.2");const f=globalThis.trustedTypes,g=f?f.createPolicy("lit-html",{createHTML:t=>t}):void 0,m=`lit$${(Math.random()+"").slice(9)}$`,_="?"+m,b=`<${_}>`,y=document,$=(t="")=>y.createComment(t),w=t=>null===t||"object"!=typeof t&&"function"!=typeof t,x=Array.isArray,A=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,k=/-->/g,S=/>/g,C=/>|[ 	\n\r](?:([^\s"'>=/]+)([ 	\n\r]*=[ 	\n\r]*(?:[^ 	\n\r"'`<>=]|("|')|))|$)/g,E=/'/g,U=/"/g,z=/^(?:script|style|textarea)$/i,P=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),T=Symbol.for("lit-noChange"),N=Symbol.for("lit-nothing"),O=new WeakMap,H=y.createTreeWalker(y,129,null,!1),R=(t,e)=>{const i=t.length-1,s=[];let o,r=2===e?"<svg>":"",n=A;for(let e=0;e<i;e++){const i=t[e];let a,l,c=-1,d=0;for(;d<i.length&&(n.lastIndex=d,l=n.exec(i),null!==l);)d=n.lastIndex,n===A?"!--"===l[1]?n=k:void 0!==l[1]?n=S:void 0!==l[2]?(z.test(l[2])&&(o=RegExp("</"+l[2],"g")),n=C):void 0!==l[3]&&(n=C):n===C?">"===l[0]?(n=null!=o?o:A,c=-1):void 0===l[1]?c=-2:(c=n.lastIndex-l[2].length,a=l[1],n=void 0===l[3]?C:'"'===l[3]?U:E):n===U||n===E?n=C:n===k||n===S?n=A:(n=C,o=void 0);const h=n===C&&t[e+1].startsWith("/>")?" ":"";r+=n===A?i+b:c>=0?(s.push(a),i.slice(0,c)+"$lit$"+i.slice(c)+m+h):i+m+(-2===c?(s.push(void 0),e):h)}const a=r+(t[i]||"<?>")+(2===e?"</svg>":"");return[void 0!==g?g.createHTML(a):a,s]};class M{constructor({strings:t,_$litType$:e},i){let s;this.parts=[];let o=0,r=0;const n=t.length-1,a=this.parts,[l,c]=R(t,e);if(this.el=M.createElement(l,i),H.currentNode=this.el.content,2===e){const t=this.el.content,e=t.firstChild;e.remove(),t.append(...e.childNodes)}for(;null!==(s=H.nextNode())&&a.length<n;){if(1===s.nodeType){if(s.hasAttributes()){const t=[];for(const e of s.getAttributeNames())if(e.endsWith("$lit$")||e.startsWith(m)){const i=c[r++];if(t.push(e),void 0!==i){const t=s.getAttribute(i.toLowerCase()+"$lit$").split(m),e=/([.?@])?(.*)/.exec(i);a.push({type:1,index:o,name:e[2],strings:t,ctor:"."===e[1]?B:"?"===e[1]?q:"@"===e[1]?K:L})}else a.push({type:6,index:o})}for(const e of t)s.removeAttribute(e)}if(z.test(s.tagName)){const t=s.textContent.split(m),e=t.length-1;if(e>0){s.textContent=f?f.emptyScript:"";for(let i=0;i<e;i++)s.append(t[i],$()),H.nextNode(),a.push({type:2,index:++o});s.append(t[e],$())}}}else if(8===s.nodeType)if(s.data===_)a.push({type:2,index:o});else{let t=-1;for(;-1!==(t=s.data.indexOf(m,t+1));)a.push({type:7,index:o}),t+=m.length-1}o++}}static createElement(t,e){const i=y.createElement("template");return i.innerHTML=t,i}}function j(t,e,i=t,s){var o,r,n,a;if(e===T)return e;let l=void 0!==s?null===(o=i._$Cl)||void 0===o?void 0:o[s]:i._$Cu;const c=w(e)?void 0:e._$litDirective$;return(null==l?void 0:l.constructor)!==c&&(null===(r=null==l?void 0:l._$AO)||void 0===r||r.call(l,!1),void 0===c?l=void 0:(l=new c(t),l._$AT(t,i,s)),void 0!==s?(null!==(n=(a=i)._$Cl)&&void 0!==n?n:a._$Cl=[])[s]=l:i._$Cu=l),void 0!==l&&(e=j(t,l._$AS(t,e.values),l,s)),e}class D{constructor(t,e){this.v=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}p(t){var e;const{el:{content:i},parts:s}=this._$AD,o=(null!==(e=null==t?void 0:t.creationScope)&&void 0!==e?e:y).importNode(i,!0);H.currentNode=o;let r=H.nextNode(),n=0,a=0,l=s[0];for(;void 0!==l;){if(n===l.index){let e;2===l.type?e=new I(r,r.nextSibling,this,t):1===l.type?e=new l.ctor(r,l.name,l.strings,this,t):6===l.type&&(e=new G(r,this,t)),this.v.push(e),l=s[++a]}n!==(null==l?void 0:l.index)&&(r=H.nextNode(),n++)}return o}m(t){let e=0;for(const i of this.v)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class I{constructor(t,e,i,s){var o;this.type=2,this._$AH=N,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=s,this._$Cg=null===(o=null==s?void 0:s.isConnected)||void 0===o||o}get _$AU(){var t,e;return null!==(e=null===(t=this._$AM)||void 0===t?void 0:t._$AU)&&void 0!==e?e:this._$Cg}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=j(this,t,e),w(t)?t===N||null==t||""===t?(this._$AH!==N&&this._$AR(),this._$AH=N):t!==this._$AH&&t!==T&&this.$(t):void 0!==t._$litType$?this.T(t):void 0!==t.nodeType?this.S(t):(t=>{var e;return x(t)||"function"==typeof(null===(e=t)||void 0===e?void 0:e[Symbol.iterator])})(t)?this.M(t):this.$(t)}A(t,e=this._$AB){return this._$AA.parentNode.insertBefore(t,e)}S(t){this._$AH!==t&&(this._$AR(),this._$AH=this.A(t))}$(t){this._$AH!==N&&w(this._$AH)?this._$AA.nextSibling.data=t:this.S(y.createTextNode(t)),this._$AH=t}T(t){var e;const{values:i,_$litType$:s}=t,o="number"==typeof s?this._$AC(t):(void 0===s.el&&(s.el=M.createElement(s.h,this.options)),s);if((null===(e=this._$AH)||void 0===e?void 0:e._$AD)===o)this._$AH.m(i);else{const t=new D(o,this),e=t.p(this.options);t.m(i),this.S(e),this._$AH=t}}_$AC(t){let e=O.get(t.strings);return void 0===e&&O.set(t.strings,e=new M(t)),e}M(t){x(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,s=0;for(const o of t)s===e.length?e.push(i=new I(this.A($()),this.A($()),this,this.options)):i=e[s],i._$AI(o),s++;s<e.length&&(this._$AR(i&&i._$AB.nextSibling,s),e.length=s)}_$AR(t=this._$AA.nextSibling,e){var i;for(null===(i=this._$AP)||void 0===i||i.call(this,!1,!0,e);t&&t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){var e;void 0===this._$AM&&(this._$Cg=t,null===(e=this._$AP)||void 0===e||e.call(this,t))}}class L{constructor(t,e,i,s,o){this.type=1,this._$AH=N,this._$AN=void 0,this.element=t,this.name=e,this._$AM=s,this.options=o,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=N}get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}_$AI(t,e=this,i,s){const o=this.strings;let r=!1;if(void 0===o)t=j(this,t,e,0),r=!w(t)||t!==this._$AH&&t!==T,r&&(this._$AH=t);else{const s=t;let n,a;for(t=o[0],n=0;n<o.length-1;n++)a=j(this,s[i+n],e,n),a===T&&(a=this._$AH[n]),r||(r=!w(a)||a!==this._$AH[n]),a===N?t=N:t!==N&&(t+=(null!=a?a:"")+o[n+1]),this._$AH[n]=a}r&&!s&&this.k(t)}k(t){t===N?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,null!=t?t:"")}}class B extends L{constructor(){super(...arguments),this.type=3}k(t){this.element[this.name]=t===N?void 0:t}}const V=f?f.emptyScript:"";class q extends L{constructor(){super(...arguments),this.type=4}k(t){t&&t!==N?this.element.setAttribute(this.name,V):this.element.removeAttribute(this.name)}}class K extends L{constructor(t,e,i,s,o){super(t,e,i,s,o),this.type=5}_$AI(t,e=this){var i;if((t=null!==(i=j(this,t,e,0))&&void 0!==i?i:N)===T)return;const s=this._$AH,o=t===N&&s!==N||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,r=t!==N&&(s===N||o);o&&this.element.removeEventListener(this.name,this,s),r&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){var e,i;"function"==typeof this._$AH?this._$AH.call(null!==(i=null===(e=this.options)||void 0===e?void 0:e.host)&&void 0!==i?i:this.element,t):this._$AH.handleEvent(t)}}class G{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){j(this,t)}}const Y=window.litHtmlPolyfillSupport;
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-var G,Z;null==W||W(M,I),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:globalThis.litHtmlVersions=[]).push("2.0.2");class J extends u{constructor(){super(...arguments),this.renderOptions={host:this},this._$Dt=void 0}createRenderRoot(){var t,e;const i=super.createRenderRoot();return null!==(t=(e=this.renderOptions).renderBefore)&&void 0!==t||(e.renderBefore=i.firstChild),i}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Dt=((t,e,i)=>{var s,o;const r=null!==(s=null==i?void 0:i.renderBefore)&&void 0!==s?s:e;let n=r._$litPart$;if(void 0===n){const t=null!==(o=null==i?void 0:i.renderBefore)&&void 0!==o?o:null;r._$litPart$=n=new I(e.insertBefore(y(),t),t,void 0,null!=i?i:{})}return n._$AI(t),n})(e,this.renderRoot,this.renderOptions)}connectedCallback(){var t;super.connectedCallback(),null===(t=this._$Dt)||void 0===t||t.setConnected(!0)}disconnectedCallback(){var t;super.disconnectedCallback(),null===(t=this._$Dt)||void 0===t||t.setConnected(!1)}render(){return T}}J.finalized=!0,J._$litElement$=!0,null===(G=globalThis.litElementHydrateSupport)||void 0===G||G.call(globalThis,{LitElement:J});const Q=globalThis.litElementPolyfillSupport;null==Q||Q({LitElement:J}),(null!==(Z=globalThis.litElementVersions)&&void 0!==Z?Z:globalThis.litElementVersions=[]).push("3.0.2");
+var W,J;null==Y||Y(M,I),(null!==(v=globalThis.litHtmlVersions)&&void 0!==v?v:globalThis.litHtmlVersions=[]).push("2.0.2");class Z extends u{constructor(){super(...arguments),this.renderOptions={host:this},this._$Dt=void 0}createRenderRoot(){var t,e;const i=super.createRenderRoot();return null!==(t=(e=this.renderOptions).renderBefore)&&void 0!==t||(e.renderBefore=i.firstChild),i}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Dt=((t,e,i)=>{var s,o;const r=null!==(s=null==i?void 0:i.renderBefore)&&void 0!==s?s:e;let n=r._$litPart$;if(void 0===n){const t=null!==(o=null==i?void 0:i.renderBefore)&&void 0!==o?o:null;r._$litPart$=n=new I(e.insertBefore($(),t),t,void 0,null!=i?i:{})}return n._$AI(t),n})(e,this.renderRoot,this.renderOptions)}connectedCallback(){var t;super.connectedCallback(),null===(t=this._$Dt)||void 0===t||t.setConnected(!0)}disconnectedCallback(){var t;super.disconnectedCallback(),null===(t=this._$Dt)||void 0===t||t.setConnected(!1)}render(){return T}}Z.finalized=!0,Z._$litElement$=!0,null===(W=globalThis.litElementHydrateSupport)||void 0===W||W.call(globalThis,{LitElement:Z});const Q=globalThis.litElementPolyfillSupport;null==Q||Q({LitElement:Z}),(null!==(J=globalThis.litElementVersions)&&void 0!==J?J:globalThis.litElementVersions=[]).push("3.0.2");
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -55,12 +55,12 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
  * @license
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const ot=it(class extends st{constructor(t){var e;if(super(t),t.type!==tt||"style"!==t.name||(null===(e=t.strings)||void 0===e?void 0:e.length)>2)throw Error("The `styleMap` directive must be used in the `style` attribute and must be the only part in the attribute.")}render(t){return Object.keys(t).reduce(((e,i)=>{const s=t[i];return null==s?e:e+`${i=i.replace(/(?:^(webkit|moz|ms|o)|)(?=[A-Z])/g,"-$&").toLowerCase()}:${s};`}),"")}update(t,[e]){const{style:i}=t.element;if(void 0===this.ut){this.ut=new Set;for(const t in e)this.ut.add(t);return this.render(e)}this.ut.forEach((t=>{null==e[t]&&(this.ut.delete(t),t.includes("-")?i.removeProperty(t):i[t]="")}));for(const t in e){const s=e[t];null!=s&&(this.ut.add(t),t.includes("-")?i.setProperty(t,s):i[t]=s)}return T}}),rt=(t,e)=>{var i,s;const o=t._$AN;if(void 0===o)return!1;for(const t of o)null===(s=(i=t)._$AO)||void 0===s||s.call(i,e,!1),rt(t,e);return!0},nt=t=>{let e,i;do{if(void 0===(e=t._$AM))break;i=e._$AN,i.delete(t),t=e}while(0===(null==i?void 0:i.size))},at=t=>{for(let e;e=t._$AM;t=e){let i=e._$AN;if(void 0===i)e._$AN=i=new Set;else if(i.has(t))break;i.add(t),ht(e)}};
+ */const ot=it(class extends st{constructor(t){var e;if(super(t),t.type!==tt||"style"!==t.name||(null===(e=t.strings)||void 0===e?void 0:e.length)>2)throw Error("The `styleMap` directive must be used in the `style` attribute and must be the only part in the attribute.")}render(t){return Object.keys(t).reduce(((e,i)=>{const s=t[i];return null==s?e:e+`${i=i.replace(/(?:^(webkit|moz|ms|o)|)(?=[A-Z])/g,"-$&").toLowerCase()}:${s};`}),"")}update(t,[e]){const{style:i}=t.element;if(void 0===this.ut){this.ut=new Set;for(const t in e)this.ut.add(t);return this.render(e)}this.ut.forEach((t=>{null==e[t]&&(this.ut.delete(t),t.includes("-")?i.removeProperty(t):i[t]="")}));for(const t in e){const s=e[t];null!=s&&(this.ut.add(t),t.includes("-")?i.setProperty(t,s):i[t]=s)}return T}}),rt=(t,e)=>{var i,s;const o=t._$AN;if(void 0===o)return!1;for(const t of o)null===(s=(i=t)._$AO)||void 0===s||s.call(i,e,!1),rt(t,e);return!0},nt=t=>{let e,i;do{if(void 0===(e=t._$AM))break;i=e._$AN,i.delete(t),t=e}while(0===(null==i?void 0:i.size))},at=t=>{for(let e;e=t._$AM;t=e){let i=e._$AN;if(void 0===i)e._$AN=i=new Set;else if(i.has(t))break;i.add(t),dt(e)}};
 /**
  * @license
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */function lt(t){void 0!==this._$AN?(nt(this),this._$AM=t,at(this)):this._$AM=t}function ct(t,e=!1,i=0){const s=this._$AH,o=this._$AN;if(void 0!==o&&0!==o.size)if(e)if(Array.isArray(s))for(let t=i;t<s.length;t++)rt(s[t],!1),nt(s[t]);else null!=s&&(rt(s,!1),nt(s));else rt(this,t)}const ht=t=>{var e,i,s,o;t.type==et&&(null!==(e=(s=t)._$AP)&&void 0!==e||(s._$AP=ct),null!==(i=(o=t)._$AQ)&&void 0!==i||(o._$AQ=lt))};class dt extends st{constructor(){super(...arguments),this._$AN=void 0}_$AT(t,e,i){super._$AT(t,e,i),at(this),this.isConnected=t._$AU}_$AO(t,e=!0){var i,s;t!==this.isConnected&&(this.isConnected=t,t?null===(i=this.reconnected)||void 0===i||i.call(this):null===(s=this.disconnected)||void 0===s||s.call(this)),e&&(rt(this,t),nt(this))}setValue(t){if((t=>void 0===t.strings)
+ */function lt(t){void 0!==this._$AN?(nt(this),this._$AM=t,at(this)):this._$AM=t}function ct(t,e=!1,i=0){const s=this._$AH,o=this._$AN;if(void 0!==o&&0!==o.size)if(e)if(Array.isArray(s))for(let t=i;t<s.length;t++)rt(s[t],!1),nt(s[t]);else null!=s&&(rt(s,!1),nt(s));else rt(this,t)}const dt=t=>{var e,i,s,o;t.type==et&&(null!==(e=(s=t)._$AP)&&void 0!==e||(s._$AP=ct),null!==(i=(o=t)._$AQ)&&void 0!==i||(o._$AQ=lt))};class ht extends st{constructor(){super(...arguments),this._$AN=void 0}_$AT(t,e,i){super._$AT(t,e,i),at(this),this.isConnected=t._$AU}_$AO(t,e=!0){var i,s;t!==this.isConnected&&(this.isConnected=t,t?null===(i=this.reconnected)||void 0===i||i.call(this):null===(s=this.disconnected)||void 0===s||s.call(this)),e&&(rt(this,t),nt(this))}setValue(t){if((t=>void 0===t.strings)
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -75,7 +75,7 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const vt=t=>!(t=>null===t||"object"!=typeof t&&"function"!=typeof t)(t)&&"function"==typeof t.then;const _t=it(class extends dt{constructor(){super(...arguments),this._$Cft=1073741823,this._$Cwt=[],this._$CG=new pt(this),this._$CK=new ut}render(...t){var e;return null!==(e=t.find((t=>!vt(t))))&&void 0!==e?e:T}update(t,e){const i=this._$Cwt;let s=i.length;this._$Cwt=e;const o=this._$CG,r=this._$CK;this.isConnected||this.disconnected();for(let t=0;t<e.length&&!(t>this._$Cft);t++){const n=e[t];if(!vt(n))return this._$Cft=t,n;t<s&&n===i[t]||(this._$Cft=1073741823,s=0,Promise.resolve(n).then((async t=>{for(;r.get();)await r.get();const e=o.deref();if(void 0!==e){const i=e._$Cwt.indexOf(n);i>-1&&i<e._$Cft&&(e._$Cft=i,e.setValue(t))}})))}return T}disconnected(){this._$CG.disconnect(),this._$CK.pause()}reconnected(){this._$CG.reconnect(this),this._$CK.resume()}}),ft=((t,...e)=>{const s=1===t.length?t[0]:e.reduce(((e,i,s)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[s+1]),t[0]);return new o(s,i)})`
+ */const vt=t=>!(t=>null===t||"object"!=typeof t&&"function"!=typeof t)(t)&&"function"==typeof t.then;const ft=it(class extends ht{constructor(){super(...arguments),this._$Cft=1073741823,this._$Cwt=[],this._$CG=new pt(this),this._$CK=new ut}render(...t){var e;return null!==(e=t.find((t=>!vt(t))))&&void 0!==e?e:T}update(t,e){const i=this._$Cwt;let s=i.length;this._$Cwt=e;const o=this._$CG,r=this._$CK;this.isConnected||this.disconnected();for(let t=0;t<e.length&&!(t>this._$Cft);t++){const n=e[t];if(!vt(n))return this._$Cft=t,n;t<s&&n===i[t]||(this._$Cft=1073741823,s=0,Promise.resolve(n).then((async t=>{for(;r.get();)await r.get();const e=o.deref();if(void 0!==e){const i=e._$Cwt.indexOf(n);i>-1&&i<e._$Cft&&(e._$Cft=i,e.setValue(t))}})))}return T}disconnected(){this._$CG.disconnect(),this._$CK.pause()}reconnected(){this._$CG.reconnect(this),this._$CK.resume()}}),gt=((t,...e)=>{const s=1===t.length?t[0]:e.reduce(((e,i,s)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[s+1]),t[0]);return new o(s,i)})`
   ha-card {
     --sns-card-background: var(--ha-card-background, var(--paper-card-background-color, white));
     --sns-card-border-radius: var(--ha-card-border-radius, 2px);
@@ -86,7 +86,7 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     --sns-card-header-font-size: var(--ha-card-header-font-size, 24px);
 
     --sns-button-size-width: 100px;
-    --sns-button-size-height: 100px;
+    --sns-button-size-height: 80px;
     --sns-artwork-opacity: 1;
     --sns-button-icon-color: var(--paper-item-icon-color, var(--primary-color, rgba(211, 3, 32, 0.95)));
 
@@ -100,6 +100,89 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     transition: all 0.3s ease-out;
     padding: 16px;
   }
+
+  .container {
+    display: grid;
+    grid-template-columns: 0.4fr 1.6fr;
+    grid-template-rows: 1.5fr 0.5fr;
+    gap: 1em 1em;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "players player-main"
+      "playlists playlists";
+  }
+
+  div.container div.players {
+    grid-area: players;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  @media (max-width: 800px) {
+    div.container div.players {
+      flex-direction: row;
+    }
+  }
+
+  .player-main {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1.6fr 0.4fr;
+    gap: 1em 2em;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "player"
+      "extra-players";
+    grid-area: player-main;
+  }
+
+  div.container .player-main .player {
+    grid-area: player;
+    position: relative;
+  }
+
+  .extra-players {
+    grid-area: extra-players;
+  }
+
+  div.playlists {
+    grid-area: playlists;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+
+  @media (max-width: 800px) {
+    .container {
+      grid-template-areas:
+        "players"
+        "player-main"
+        "playlists"
+        "playlists";
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 3fr 1fr 1fr;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   .header {
     color: var(--sns-card-header-color);
     font-family: var(--sns-card-header-font-family);
@@ -115,17 +198,17 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     text-overflow: ellipsis;
   }
 
-  .players {
-    margin: 3px 5px;
-    width: 382px;
-  }
-  .player__container {
-    position: relative;
-    margin: 0;
-    background: var(--sns-player-background)#fff;
-    border-radius: 12px;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
-  }
+  // .players {
+  //   margin: 3px 5px;
+  //   width: 382px;
+  // }
+  // .player__container {
+  //   position: relative;
+  //   margin: 0;
+  //   background: var(--sns-player-background, #fff);
+  //   border-radius: 12px;
+  //   box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
+  // }
 
   .player__body {
     position: relative;
@@ -384,27 +467,28 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     opacity: 0.9;
   }
 
-  .center {
-    margin: 2rem auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
+  // .center {
+  //   margin: 2rem auto;
+  //   display: flex;
+  //   flex-direction: row;
+  //   justify-content: center;
+  // }
 
-  .groups {
-    margin: 0;
+  // .players {
+  //   margin: 0;
+  //   padding: 0;
+  //   width: auto;
+  // }
+  .players > .group {
     padding: 0;
-    width: auto;
-  }
-  .groups > .group {
-    padding: 0;
     margin: 0;
+    flex-grow: 1;
   }
   .group .wrap {
     cursor: pointer;
     display: inline-block;
     width: var(--sns-button-size-width);
-    height: var(--sns-button-size-height);
+    min-height: var(--sns-button-size-height);
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
     position: relative;
@@ -473,10 +557,10 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
 
   div.inner-wrap span.cover-icon {
     position: absolute;
-    right: 0;
-    top: 0;
-    width: 50px;
-    height: 50px;
+    right: 4px;
+    top: 4px;
+    width: 40px;
+    height: 40px;
   }
 
   .entity__icon {
@@ -530,24 +614,32 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     color: rgb(0, 0, 0);
   }
 
-  .sidebar {
-    width: auto;
-    margin: 0;
-    padding: 0;
+  // .extra-players {
+  //   width: auto;
+  //   margin: 0;
+  //   padding: 0;
+  // }
+  // ul.members {
+  //   list-style: none;
+  //   padding: 0;
+  //   margin: 0;
+  // }
+  // ul.members > li {
+  //   padding: 0;
+  //   margin: 0;
+  // }
+  div.members {
+    display: flex;
+    width: 100%
+    flex-direction: row;
+    justify-content: space-between;
   }
-  ul.members {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  ul.members > li {
-    padding: 0;
-    margin: 0;
-  }
-  ul.members > li .member {
+
+  div.members > .member {
     cursor: pointer;
     display: inline-block;
-    width: var(--sns-button-size-width);
+    flex-grow: 1;
+    //width: var(--sns-button-size-width);
     height: 50px;
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
@@ -559,13 +651,15 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     margin: 3px;
     overflow: hidden;
   }
-  ul.members > li .member .member-inner {
+  //ul.members > li
+  .member .member-inner {
     display: flex;
     flex-direction: column;
     height: 100%;
     pointer-events: none;
   }
-  ul.members > li .member span {
+
+  div.members > .member span {
     font-size: 14px;
     font-weight: 500;
     color: #000;
@@ -579,7 +673,8 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     pointer-events: none;
     overflow: hidden;
   }
-  ul.members > li .member ha-icon {
+
+  div.members > .member ha-icon {
     display: block;
     height: 30px;
     width: 30px;
@@ -590,20 +685,13 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     text-align: center;
     pointer-events: none;
   }
-  ul.members > li .member:hover ha-icon {
+
+  .member:hover ha-icon {
     color: var(--sns-button-icon-color);
   }
 
-  ul.favorites {
-    margin: 0;
-    padding: 0;
-  }
-  ul.favorites > li {
-    padding: 0;
-    margin: 0;
-    display: inline-block;
-  }
-  ul.favorites > li .favorite {
+
+  div.playlists > .favorite {
     cursor: pointer;
     display: inline-block;
     width: var(--sns-button-size-width);
@@ -618,13 +706,13 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     margin: 3px;
     overflow: hidden;
   }
-  ul.favorites > li .favorite .favorite-inner {
+  div.playlists > .favorite .favorite-inner {
     display: flex;
     flex-direction: column;
     height: 100%;
     pointer-events: none;
   }
-  ul.favorites > li .favorite span.icon {
+  div.playlists > .favorite span.icon {
     display: block;
     height: 40px;
     width: 40px;
@@ -635,12 +723,12 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     text-align: center;
     pointer-events: none;
   }
-  ul.favorites > li .favorite span.icon ha-icon {
+  div.playlists > .favorite span.icon ha-icon {
     width: 30px;
     height: 30px;
     pointer-events: none;
   }
-  ul.favorites > li .favorite span.name {
+  div.playlists > .favorite span.name {
     font-size: 14px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.4);
@@ -666,13 +754,14 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     }
   }
 
-`,gt="mdi:skip-next",mt={playing:"mdi:pause",paused:"mdi:play"},bt="mdi:skip-previous";console.info("%c SONOS-CARD \n%c Version: 2.0.0-beta3    ","color: red; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray"),window.customCards=window.customCards||[],window.customCards.push({type:"sonos-card",name:"Sonos-Card",preview:!1,description:"A responsive Sonos card with support for groups and playlists"});let $t=class extends J{constructor(){super(),this.active=""}set hass(t){this._hass=t}render(){const t=[],e=[];let i=!0;for(const s of this.config.entities){const o=this._hass.states[s];if(i){i=!1;for(const t of o.attributes.source_list)e.push(t)}t[s]=o.attributes.friendly_name,o.attributes.sonos_group.length>1&&o.attributes.sonos_group[0]==s?"playing"==o.state&&""==this.active&&(this.active=s):1==o.attributes.sonos_group.length&&"playing"==o.state&&""==this.active&&(this.active=s)}return P`
-      <ha-card>
-        <div class="center">
-          <div class="groups">
+`,mt=["entities","active"],_t="mdi:skip-next",bt={playing:"mdi:pause",paused:"mdi:play"},yt="mdi:skip-previous";console.info("%c SONOS-CARD \n%c Version: 2.0.0-beta3    ","color: red; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray"),window.customCards=window.customCards||[],window.customCards.push({type:"sonos-card",name:"Sonos-Card",preview:!1,description:"A responsive Sonos card with support for groups and playlists"});let $t=class extends Z{constructor(){super(),this.entities={},this.active=""}setConfig(t){if(!t.entities)throw new Error("You need to define entities");this.config=Object.assign({name:"Sonos"},t)}set hass(t){if(!t)return;this._hass=t;let e=!1;for(const t of this.config.entities){const i=this._hass.states[t],s=this.entities[t];s?i&&JSON.stringify(s)!==JSON.stringify(i)&&(console.log("entity changed!"),this.entities[t]=i,e=!0):(this.entities[t]=i,e=!0)}e&&this.requestUpdate("entities")}shouldUpdate(t){if(!this.config)return!1;return mt.some((e=>t.has(e)))}render(){console.log("RERENDER!!!!!!!");const t=[],e=[];let i=!0;for(const s of this.config.entities){const o=this._hass.states[s];if(i){i=!1;for(const t of o.attributes.source_list)e.push(t)}t[s]=o.attributes.friendly_name,o.attributes.sonos_group.length>1&&o.attributes.sonos_group[0]==s?"playing"==o.state&&""==this.active&&(this.active=s):1==o.attributes.sonos_group.length&&"playing"==o.state&&""==this.active&&(this.active=s)}return""===this.active&&this.config.entities.length>0&&(this.active=this.config.entities[0]),P`
+      <ha-card
+        .header="sonos-card">
+        <div class="container">
+          <div class="players">
             ${this.config.entities.map((e=>{const i=this._hass.states[e];return 1==i.attributes.sonos_group.length||i.attributes.sonos_group.length>1&&i.attributes.sonos_group[0]==e?P`
-                  <div class="group" data-entity="${e}">
-                    <div class="wrap ${this.active==e?"active":""}">
+                  <div class="group" data-entity="${e}" @click="${t=>this.switchGroup(t)}">
+                    <div class="wrap ${this.active==e?"active":""}" data-entity="${e}">
                       <div class="inner-wrap">
                         <span class="icon">
                           <div class="player ${"playing"==i.state?"active":""}">
@@ -681,7 +770,7 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
                             <div class="bar"></div>
                           </div>
                         </span>
-                        <span class="cover-icon">${_t(this.renderIcon(i))}</span>
+                        <span class="cover-icon">${ft(this.renderIcon(i))}</span>
                         ${i.attributes.sonos_group.map((e=>P`<span class="name">${t[e]}</span>`))}
                         <span class="state">${i.attributes.media_artist} - ${i.attributes.media_title}</span>
                       </div>
@@ -690,10 +779,10 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
                 `:P``}))}
           </div>
 
-          <div class="players">
+          <div class="player-main">
             ${""!=this.active?P`
-                  <div class="player__container">
-                    <div class="body__cover">${_t(this.renderCover(this._hass.states[this.active]))}</div>
+                  <div class="player">
+                    <div class="body__cover">${ft(this.renderCover(this._hass.states[this.active]))}</div>
                     <div class="player__body">
                       <div class="body__info">
                         <div class="info__album">${this._hass.states[this.active].attributes.media_album_name}</div>
@@ -703,24 +792,24 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
                       <div class="body__buttons">
                         <ul class="list list--buttons">
                           <li>
-                            <ha-icon-button class="previous-button" @click="${()=>this._previousTrack(this.active)}" .icon=${bt}>
-                              <ha-icon .icon=${bt}></ha-icon>
+                            <ha-icon-button class="previous-button" @click="${t=>this._previousTrack(t,this.active)}" .icon=${yt}>
+                              <ha-icon .icon=${yt}></ha-icon>
                             </ha-icon-button>
                           </li>
                           <li class="middle">
                             <a class="list__link">
                               ${"playing"!==this._hass.states[this.active].state?P`
-                                  <ha-icon-button class="play-button" @click="${()=>this._play(this.active)}" .icon=${mt[this._hass.states[this.active].state]}>
-                                    <ha-icon .icon=${mt[this._hass.states[this.active].state]}></ha-icon>
+                                  <ha-icon-button class="play-button" @click="${t=>this._play(t,this.active)}" .icon=${bt[this._hass.states[this.active].state]}>
+                                    <ha-icon .icon=${bt[this._hass.states[this.active].state]}></ha-icon>
                                   </ha-icon-button>`:P`
-                                  <ha-icon-button class="pause-button" @click="${()=>this._pause(this.active)}" .icon=${mt[this._hass.states[this.active].state]}>
-                                    <ha-icon .icon=${mt[this._hass.states[this.active].state]}></ha-icon>
+                                  <ha-icon-button class="pause-button" @click="${t=>this._pause(t,this.active)}" .icon=${bt[this._hass.states[this.active].state]}>
+                                    <ha-icon .icon=${bt[this._hass.states[this.active].state]}></ha-icon>
                                   </ha-icon-button>`}
                             </a>
                           </li>
                           <li>
-                            <ha-icon-button class="next-button" @click="${()=>this._nextTrack(this.active)}" .icon=${gt}>
-                              <ha-icon .icon=${gt}></ha-icon>
+                            <ha-icon-button class="next-button" @click="${t=>this._nextTrack(t,this.active)}" .icon=${_t}>
+                              <ha-icon .icon=${_t}></ha-icon>
                             </ha-icon-button>
                           </li>
                         </ul>
@@ -729,65 +818,58 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
                     <div class="player__footer">
                       <ul class="list list--footer">
                         <li>
-                          <ha-icon @click="${()=>this._volumeDown(this.active)}" .icon=${"mdi:volume-minus"}></ha-icon
+                          <ha-icon @click="${t=>this._volumeDown(t,this.active)}" .icon=${"mdi:volume-minus"}></ha-icon
                           ><input
                             type="range"
                             .value="${100*this._hass.states[this.active].attributes.volume_level}"
-                            @change=${t=>this._volumeSet(this.active,t.target.value)}
+                            @change=${t=>this._volumeSet(t,this.active)}
                             min="0"
                             max="100"
                             id="volumeRange"
                             class="volumeRange"
                             style="background: linear-gradient(to right, var(--sns-button-icon-color) 0%, var(--sns-button-icon-color) ${100*this._hass.states[this.active].attributes.volume_level}%, rgb(211, 211, 211) ${100*this._hass.states[this.active].attributes.volume_level}%, rgb(211, 211, 211) 100%);"
-                          /><ha-icon @click="${()=>this._volumeUp(this.active)}" .icon=${"mdi:volume-plus"}></ha-icon>
+                          /><ha-icon @click="${t=>this._volumeUp(t,this.active)}" .icon=${"mdi:volume-plus"}></ha-icon>
                         </li>
                       </ul>
                     </div>
                   </div>
               `:P``}
-          </div>
 
-          <div class="sidebar">
-            <ul class="members">
-              ${""!=this.active?P`${this._hass.states[this.active].attributes.sonos_group.map((e=>e!=this.active?P`
-                        <li>
+            <div class="extra-players">
+              <div class="members">
+                ${""!=this.active?P`${this._hass.states[this.active].attributes.sonos_group.map((e=>e!=this.active?P`
                           <div class="member unjoin-member" data-member="${e}" @click="${t=>this._unjoin(t)}">
-                            <div class="member-inner">
+                            <div class="member-inner" data-member="${e}">
                               <ha-icon .icon=${"mdi:minus"}></ha-icon>
                               <span>${t[e]} </span>
                             </div>
                           </div>
-                        </li>
-                      `:P``))}
-                  ${this.config.entities.map((e=>e==this.active||this._hass.states[this.active].attributes.sonos_group.includes(e)?P``:P`
-                        <li>
+                        `:P``))}
+                    ${this.config.entities.map((e=>e==this.active||this._hass.states[this.active].attributes.sonos_group.includes(e)?P``:P`
                           <div class="member join-member" data-member="${e}" @click="${t=>this._join(t)}">
-                            <div class="member-inner">
+                            <div class="member-inner" data-member="${e}">
                               <ha-icon .icon=${"mdi:plus"}></ha-icon>
                               <span>${t[e]} </span>
                             </div>
                           </div>
-                        </li>
-                      `))}`:P``}
-            </ul>
+                        `))}`:P``}
+              </div>
+            </div>
+          </div>
+
+          <div class="playlists">
+            ${e.map((t=>P`
+                <div class="favorite" data-favorite="${t}" @click="${t=>this._sourceSet(t)}">
+                  <div class="favorite-inner">
+                    <span class="icon" style="">
+                      <ha-icon .icon=${"mdi:play"}></ha-icon>
+                    </span>
+                    <span class="name">${t}</span>
+                  </div>
+                </div>
+              `))}
           </div>
         </div>
-        <div class="center">
-          <ul class="favorites">
-            ${e.map((t=>P`
-                <li>
-                  <div class="favorite" data-favorite="${t}" @click="${t=>this._sourceSet(t)}">
-                    <div class="favorite-inner">
-                      <span class="icon" style="">
-                        <ha-icon .icon=${"mdi:play"}></ha-icon>
-                      </span>
-                      <span class="name">${t}</span>
-                    </div>
-                  </div>
-                </li>
-              `))}
-          </ul>
-        </div>
       </ha-card>
-    `}updated(){var t;null===(t=this.shadowRoot)||void 0===t||t.querySelectorAll(".group").forEach((t=>{t.addEventListener("click",(()=>{this.active=t.dataset.entity||""}))}))}_pause(t){this._hass.callService("media_player","media_pause",{entity_id:t})}_play(t){this._hass.callService("media_player","media_play",{entity_id:t})}_nextTrack(t){this._hass.callService("media_player","media_next_track",{entity_id:t})}_previousTrack(t){this._hass.callService("media_player","media_previous_track",{entity_id:t})}_volumeDown(t){this._hass.callService("media_player","volume_down",{entity_id:t});for(const e in this._hass.states[t].attributes.sonos_group)e!=t&&this._hass.callService("media_player","volume_down",{entity_id:e})}_volumeUp(t){this._hass.callService("media_player","volume_up",{entity_id:t});for(const e in this._hass.states[t].attributes.sonos_group)e!=t&&this._hass.callService("media_player","volume_up",{entity_id:e})}_volumeSet(t,e){const i=e/100;this._hass.callService("media_player","volume_set",{entity_id:t,volume_level:i});for(const e in this._hass.states[t].attributes.sonos_group)e!=t&&this._hass.callService("media_player","volume_set",{entity_id:e,volume_level:i})}_sourceSet(t){t.target.dataset&&t.target.dataset.favorite&&this._hass.callService("media_player","select_source",{source:t.target.dataset.favorite,entity_id:this.active})}_join(t){t.target.dataset&&t.target.dataset.member&&this._hass.callService("sonos","join",{master:this.active,entity_id:t.target.dataset.member})}_unjoin(t){t.target.dataset&&t.target.dataset.member&&this._hass.callService("sonos","unjoin",{master:this.active,entity_id:t.target.dataset.member})}setConfig(t){if(!t.entities)throw new Error("You need to define entities");this.config=t}getCardSize(){return 1}async fetchCover(t){if(t.attributes.entity_picture){const e=this._hass.hassUrl(t.attributes.entity_picture);try{const t=await fetch(new Request(e)),i=(t=>{let e="";return[].slice.call(new Uint8Array(t)).forEach((t=>e+=String.fromCharCode(t))),window.btoa(e)})(await t.arrayBuffer());return`url(data:${t.headers.get("Content-Type")||"image/jpeg"};base64,${i})`}catch(t){console.error("Fetch covers failed: "+t)}}return null}async renderCover(t){const e=await this.fetchCover(t);if("cover"===this.config.background&&e){return P`<div class='entity__cover' style=${ot({backgroundImage:e,width:"100%"})}></div>`}return P``}async renderIcon(t){const e=await this.fetchCover(t);return e?P`
-        <div class='entity__icon' style='background-image: ${e};'></div>`:P``}static get styles(){return ft}};t([X({type:Object})],$t.prototype,"config",void 0),t([X()],$t.prototype,"_hass",void 0),t([X({type:Object})],$t.prototype,"active",void 0),$t=t([(t=>e=>"function"==typeof e?((t,e)=>(window.customElements.define(t,e),e))(t,e):((t,e)=>{const{kind:i,elements:s}=e;return{kind:i,elements:s,finisher(e){window.customElements.define(t,e)}}})(t,e))("sonos-card")],$t);
+    `}switchGroup(t){const e=t.target.dataset;(null==e?void 0:e.entity)&&(this.active=null==e?void 0:e.entity)}_pause(t,e){this.callService(t,"media_player","media_pause",e)}_play(t,e){this.callService(t,"media_player","media_play",e)}_nextTrack(t,e){this.callService(t,"media_player","media_next_track",e)}_previousTrack(t,e){this.callService(t,"media_player","media_previous_track",e)}_volumeDown(t,e){this.callService(t,"media_player","volume_down",e,{},this._hass.states[e].attributes.sonos_group)}_volumeUp(t,e){this.callService(t,"media_player","volume_up",e,{},this._hass.states[e].attributes.sonos_group)}_volumeSet(t,e){const i=t.target.value/100;this.callService(t,"media_player","volume_set",e,{volume_level:i},this._hass.states[e].attributes.sonos_group)}_sourceSet(t){const e=t.target.dataset;(null==e?void 0:e.favorite)&&this.callService(t,"media_player","select_source",this.active,{source:e.favorite})}_join(t){const e=t.target.dataset;(null==e?void 0:e.member)&&this.callService(t,"sonos","join",e.member,{master:this.active})}_unjoin(t){const e=t.target.dataset;(null==e?void 0:e.member)&&this.callService(t,"sonos","unjoin",e.member)}callService(t,e,i,s,o={},r=[]){t.stopPropagation(),this._hass.callService(e,i,Object.assign(Object.assign({},s&&{entity_id:s}),o));for(const t in r)t!==s&&this._hass.states[t]&&this._hass.callService(e,i,Object.assign({entity_id:t},o))}getCardSize(){return 1}async fetchCover(t){if(t.attributes.entity_picture)try{const e=t.attributes.entity_picture_local?this._hass._hassUrl(t.attributes.entity_picture):t.attributes.entity_picture,i=await fetch(new Request(e)),s=(t=>{let e="";return[].slice.call(new Uint8Array(t)).forEach((t=>e+=String.fromCharCode(t))),window.btoa(e)})(await i.arrayBuffer());return`url(data:${i.headers.get("Content-Type")||"image/jpeg"};base64,${s})`}catch(t){console.debug("Fetch covers failed: "+t)}return null}async renderCover(t){const e=await this.fetchCover(t);if("cover"===this.config.background&&e&&e.length>0){return P`<div class='entity__cover' style=${ot({backgroundImage:e,width:"100%"})}></div>`}if("cover"===this.config.background&&!e){return P`<div class='entity__cover' style=${ot({background:"var(--sns-player-background, #fff)",width:"100%"})}></div>`}return P``}async renderIcon(t){const e=await this.fetchCover(t);return e?P`
+        <div class='entity__icon' style='background-image: ${e};'></div>`:P``}static get styles(){return gt}};t([X()],$t.prototype,"config",void 0),t([X()],$t.prototype,"entities",void 0),t([X()],$t.prototype,"_hass",void 0),t([X()],$t.prototype,"active",void 0),$t=t([(t=>e=>"function"==typeof e?((t,e)=>(window.customElements.define(t,e),e))(t,e):((t,e)=>{const{kind:i,elements:s}=e;return{kind:i,elements:s,finisher(e){window.customElements.define(t,e)}}})(t,e))("sonos-card")],$t);

@@ -1,10 +1,10 @@
-import { CSSResult, html, LitElement, TemplateResult } from 'lit';
+import { CSSResult, html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { StyleInfo, styleMap } from 'lit/directives/style-map.js';
 import { until } from 'lit/directives/until.js';
-import { HomeAssistant } from 'custom-card-helpers';
+import { HomeAssistant, LovelaceCardConfig } from 'custom-card-helpers';
 import { styles } from './styles';
-import { CARD_VERSION, ICONS } from './const';
+import { CARD_VERSION, ICONS, STATE_PROPERTIES } from './const';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { arrayBufferToBase64 } from './utils';
 
@@ -24,28 +24,38 @@ console.info(
   description: 'A responsive Sonos card with support for groups and playlists',
 });
 
-interface Config {
+interface Config extends LovelaceCardConfig {
   entities: string[];
   background: string;
+}
+
+type EntityMap = {
+  [entityId: string]: HassEntity;
 }
 
 /**
  * TODO:
  * - responsive grid
+ * -- button sizes
  * - cover as player background
+ * -- fix when no cover
  * - song progress
+ * - bigger buttons on player
  */
 @customElement('sonos-card')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class SonosCard extends LitElement {
 
-  @property({ type: Object })
+  @property()
   public config!: Config;
+
+  @property()
+  private entities: EntityMap = {} as EntityMap;
 
   @property()
   private _hass!: HomeAssistant;
 
-  @property({ type: Object })
+  @property()
   public active: string;
 
   constructor() {
@@ -53,11 +63,57 @@ class SonosCard extends LitElement {
     this.active = '';
   }
 
-  public set hass(hass: HomeAssistant) {
-    this._hass = hass;
+  public setConfig(config: Config): void {
+    if (!config.entities) {
+      throw new Error('You need to define entities');
+    }
+
+    this.config = {
+      name: 'Sonos',
+      ...config,
+    };
   }
 
-  render(): TemplateResult | void {
+  public set hass(hass: HomeAssistant) {
+    if (!hass) return;
+    this._hass = hass;
+
+    let changed = false;
+
+    // populate entities map
+    for (const entityId of this.config.entities) {
+      const entity: HassEntity = this._hass.states[entityId];
+      const cachedEntity = this.entities[entityId];
+      if (cachedEntity) {
+        if (entity && JSON.stringify(cachedEntity) !== JSON.stringify(entity)) {
+          console.log("entity changed!");
+          this.entities[entityId] = entity;
+          changed = true;
+        }
+      }
+      else {
+        this.entities[entityId] = entity;
+        changed = true;
+      }
+    }
+    if (changed) {
+      this.requestUpdate("entities");
+    }
+  }
+
+  protected shouldUpdate(changedProps: PropertyValues): boolean {
+    if (!this.config) {
+      return false;
+    }
+
+    // only re-render when we want this
+    const changed: boolean = STATE_PROPERTIES.some(prop => changedProps.has(prop));
+    return changed;
+  }
+
+  protected render(): TemplateResult | void {
+    console.log("RERENDER!!!!!!!");
+
     const speakerNames: string[] = [];
     const favorites: string[] = [];
     let first = true;
@@ -77,23 +133,29 @@ class SonosCard extends LitElement {
         if (stateObj.state == 'playing' && this.active == '') {
           this.active = entity;
         }
-      } else if (stateObj.attributes['sonos_group'].length == 1) {
+      }
+      else if (stateObj.attributes['sonos_group'].length == 1) {
         if (stateObj.state == 'playing' && this.active == '') {
           this.active = entity;
         }
       }
     }
+    if (this.active === '' && this.config.entities.length > 0) {
+      // no player is playing currently, lets set the first one
+      this.active = this.config.entities[0];
+    }
 
     return html`
-      <ha-card>
-        <div class="center">
-          <div class="groups">
+      <ha-card
+        .header="sonos-card">
+        <div class="container">
+          <div class="players">
             ${this.config.entities.map((entity) => {
               const stateObj = this._hass.states[entity];
               if (stateObj.attributes['sonos_group'].length == 1 || (stateObj.attributes['sonos_group'].length > 1 && stateObj.attributes['sonos_group'][0] == entity)) {
                 return html`
-                  <div class="group" data-entity="${entity}">
-                    <div class="wrap ${this.active == entity ? 'active' : ''}">
+                  <div class="group" data-entity="${entity}" @click="${(e: Event) => this.switchGroup(e)}">
+                    <div class="wrap ${this.active == entity ? 'active' : ''}" data-entity="${entity}">
                       <div class="inner-wrap">
                         <span class="icon">
                           <div class="player ${stateObj.state == 'playing' ? 'active' : ''}">
@@ -117,10 +179,10 @@ class SonosCard extends LitElement {
             })}
           </div>
 
-          <div class="players">
+          <div class="player-main">
             ${this.active != ''
               ? html`
-                  <div class="player__container">
+                  <div class="player">
                     <div class="body__cover">${until(this.renderCover(this._hass.states[this.active]))}</div>
                     <div class="player__body">
                       <div class="body__info">
@@ -131,7 +193,7 @@ class SonosCard extends LitElement {
                       <div class="body__buttons">
                         <ul class="list list--buttons">
                           <li>
-                            <ha-icon-button class="previous-button" @click="${() => this._previousTrack(this.active)}" .icon=${ICONS.PREV}>
+                            <ha-icon-button class="previous-button" @click="${(e: Event) => this._previousTrack(e, this.active)}" .icon=${ICONS.PREV}>
                               <ha-icon .icon=${ICONS.PREV}></ha-icon>
                             </ha-icon-button>
                           </li>
@@ -139,17 +201,17 @@ class SonosCard extends LitElement {
                             <a class="list__link">
                               ${this._hass.states[this.active].state !== 'playing'
                                 ? html`
-                                  <ha-icon-button class="play-button" @click="${() => this._play(this.active)}" .icon=${ICONS.PLAY[this._hass.states[this.active].state]}>
+                                  <ha-icon-button class="play-button" @click="${(e: Event) => this._play(e, this.active)}" .icon=${ICONS.PLAY[this._hass.states[this.active].state]}>
                                     <ha-icon .icon=${ICONS.PLAY[this._hass.states[this.active].state]}></ha-icon>
                                   </ha-icon-button>`
                                 : html`
-                                  <ha-icon-button class="pause-button" @click="${() => this._pause(this.active)}" .icon=${ICONS.PLAY[this._hass.states[this.active].state]}>
+                                  <ha-icon-button class="pause-button" @click="${(e: Event) => this._pause(e, this.active)}" .icon=${ICONS.PLAY[this._hass.states[this.active].state]}>
                                     <ha-icon .icon=${ICONS.PLAY[this._hass.states[this.active].state]}></ha-icon>
                                   </ha-icon-button>`}
                             </a>
                           </li>
                           <li>
-                            <ha-icon-button class="next-button" @click="${() => this._nextTrack(this.active)}" .icon=${ICONS.NEXT}>
+                            <ha-icon-button class="next-button" @click="${(e: Event) => this._nextTrack(e, this.active)}" .icon=${ICONS.NEXT}>
                               <ha-icon .icon=${ICONS.NEXT}></ha-icon>
                             </ha-icon-button>
                           </li>
@@ -159,216 +221,172 @@ class SonosCard extends LitElement {
                     <div class="player__footer">
                       <ul class="list list--footer">
                         <li>
-                          <ha-icon @click="${() => this._volumeDown(this.active)}" .icon=${'mdi:volume-minus'}></ha-icon
+                          <ha-icon @click="${(e: Event) => this._volumeDown(e, this.active)}" .icon=${'mdi:volume-minus'}></ha-icon
                           ><input
                             type="range"
                             .value="${100 * this._hass.states[this.active].attributes.volume_level}"
-                            @change=${(e) => this._volumeSet(this.active, e.target.value)}
+                            @change=${(e: Event) => this._volumeSet(e, this.active)}
                             min="0"
                             max="100"
                             id="volumeRange"
                             class="volumeRange"
                             style="background: linear-gradient(to right, var(--sns-button-icon-color) 0%, var(--sns-button-icon-color) ${100 * this._hass.states[this.active].attributes.volume_level}%, rgb(211, 211, 211) ${100 *
                             this._hass.states[this.active].attributes.volume_level}%, rgb(211, 211, 211) 100%);"
-                          /><ha-icon @click="${() => this._volumeUp(this.active)}" .icon=${'mdi:volume-plus'}></ha-icon>
+                          /><ha-icon @click="${(e: Event) => this._volumeUp(e, this.active)}" .icon=${'mdi:volume-plus'}></ha-icon>
                         </li>
                       </ul>
                     </div>
                   </div>
               `
             : html``}
-          </div>
 
-          <div class="sidebar">
-            <ul class="members">
-              ${this.active != ''
-                ? html`${this._hass.states[this.active].attributes['sonos_group'].map((entity: string) => {
-                    if (entity != this.active) {
-                      return html`
-                        <li>
-                          <div class="member unjoin-member" data-member="${entity}" @click="${(e) => this._unjoin(e)}">
-                            <div class="member-inner">
+            <div class="extra-players">
+              <div class="members">
+                ${this.active != ''
+                  ? html`${this._hass.states[this.active].attributes['sonos_group'].map((entity: string) => {
+                      if (entity != this.active) {
+                        return html`
+                          <div class="member unjoin-member" data-member="${entity}" @click="${(e: Event) => this._unjoin(e)}">
+                            <div class="member-inner" data-member="${entity}">
                               <ha-icon .icon=${'mdi:minus'}></ha-icon>
                               <span>${speakerNames[entity]} </span>
                             </div>
                           </div>
-                        </li>
-                      `;
-                    } else {
-                      return html``;
-                    }
-                  })}
-                  ${this.config.entities.map((entity) => {
-                    if (entity != this.active && !this._hass.states[this.active].attributes['sonos_group'].includes(entity)) {
-                      return html`
-                        <li>
-                          <div class="member join-member" data-member="${entity}" @click="${(e) => this._join(e)}">
-                            <div class="member-inner">
+                        `;
+                      } else {
+                        return html``;
+                      }
+                    })}
+                    ${this.config.entities.map((entity) => {
+                      if (entity != this.active && !this._hass.states[this.active].attributes['sonos_group'].includes(entity)) {
+                        return html`
+                          <div class="member join-member" data-member="${entity}" @click="${(e: Event) => this._join(e)}">
+                            <div class="member-inner" data-member="${entity}">
                               <ha-icon .icon=${'mdi:plus'}></ha-icon>
                               <span>${speakerNames[entity]} </span>
                             </div>
                           </div>
-                        </li>
-                      `;
-                    } else {
-                      return html``;
-                    }
-                  })}`
-                : html``}
-            </ul>
+                        `;
+                      } else {
+                        return html``;
+                      }
+                    })}`
+                  : html``}
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="center">
-          <ul class="favorites">
+
+          <div class="playlists">
             ${favorites.map((favorite) => {
               return html`
-                <li>
-                  <div class="favorite" data-favorite="${favorite}" @click="${(e) => this._sourceSet(e)}">
-                    <div class="favorite-inner">
-                      <span class="icon" style="">
-                        <ha-icon .icon=${'mdi:play'}></ha-icon>
-                      </span>
-                      <span class="name">${favorite}</span>
-                    </div>
+                <div class="favorite" data-favorite="${favorite}" @click="${(e: Event) => this._sourceSet(e)}">
+                  <div class="favorite-inner">
+                    <span class="icon" style="">
+                      <ha-icon .icon=${'mdi:play'}></ha-icon>
+                    </span>
+                    <span class="name">${favorite}</span>
                   </div>
-                </li>
+                </div>
               `;
             })}
-          </ul>
+          </div>
         </div>
       </ha-card>
     `;
   }
 
-  updated(): void {
-    // Set active player
+
+  private switchGroup(e: Event) {
+    const dataset = (e.target as HTMLElement).dataset;
+    if (dataset?.entity) {
+      this.active = dataset?.entity;
+    }
+  }
+
+  private _pause(e: Event, entity: string): void {
+    this.callService(e, 'media_player', 'media_pause', entity);
+  }
+
+  private _play(e: Event, entity: string): void {
+    this.callService(e, 'media_player', 'media_play', entity);
+  }
+
+  private _nextTrack(e: Event, entity: string): void {
+    this.callService(e, 'media_player', 'media_next_track', entity);
+  }
+
+  private _previousTrack(e: Event, entity: string): void {
+    this.callService(e, 'media_player', 'media_previous_track', entity);
+  }
+  private _volumeDown(e: Event, entity: string): void {
+    this.callService(e, 'media_player', 'volume_down', entity, { }, this._hass.states[entity].attributes['sonos_group']);
+  }
+
+  private _volumeUp(e: Event, entity: string): void {
+    this.callService(e, 'media_player', 'volume_up', entity, { }, this._hass.states[entity].attributes['sonos_group']);
+  }
+
+  private _volumeSet(e: Event, entity: string): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.shadowRoot?.querySelectorAll('.group').forEach((group: any) => {
-      group.addEventListener('click', () => {
-        this.active = group.dataset.entity || '';
-      });
-    });
+    const volumeFloat = (e.target as any).value / 100;
+    this.callService(e, 'media_player', 'volume_set', entity, { volume_level: volumeFloat }, this._hass.states[entity].attributes['sonos_group']);
   }
 
-  _pause(entity: string): void {
-    this._hass.callService('media_player', 'media_pause', {
-      entity_id: entity,
-    });
+  private _sourceSet(e: Event): void {
+    const dataset = (e.target as HTMLElement).dataset;
+    if (dataset?.favorite) {
+      this.callService(e, 'media_player', 'select_source', this.active, { source: dataset.favorite });
+    }
   }
 
-  _play(entity: string): void {
-    this._hass.callService('media_player', 'media_play', {
-      entity_id: entity,
-    });
+  private _join(e: Event): void {
+    const dataset = (e.target as HTMLElement).dataset;
+    if (dataset?.member) {
+      this.callService(e, 'sonos', 'join', dataset.member, { master: this.active });
+    }
   }
 
-  _nextTrack(entity: string): void {
-    this._hass.callService('media_player', 'media_next_track', {
-      entity_id: entity,
-    });
+  private _unjoin(e: Event): void {
+    const dataset = (e.target as HTMLElement).dataset;
+    if (dataset?.member) {
+      this.callService(e, 'sonos', 'unjoin', dataset.member);
+    }
   }
 
-  _previousTrack(entity: string): void {
-    this._hass.callService('media_player', 'media_previous_track', {
-      entity_id: entity,
-    });
-  }
-
-  _volumeDown(entity: string): void {
-    this._hass.callService('media_player', 'volume_down', {
-      entity_id: entity,
+  private callService(e: Event, domain: string, service: string, entityId: string, options: {} = {}, members: string[] = []) {
+    e.stopPropagation();
+    this._hass.callService(domain, service, {
+      ...(entityId && { entity_id: entityId }),
+      ...options,
     });
 
-    for (const member in this._hass.states[entity].attributes['sonos_group']) {
-      if (member != entity) {
-        this._hass.callService('media_player', 'volume_down', {
+    // and for all possible group members
+    for (const member in members) {
+      if (member !== entityId && this._hass.states[member]) {
+        this._hass.callService(domain, service, {
           entity_id: member,
+          ...options,
         });
       }
     }
   }
 
-  _volumeUp(entity: string): void {
-    this._hass.callService('media_player', 'volume_up', {
-      entity_id: entity,
-    });
-
-    for (const member in this._hass.states[entity].attributes['sonos_group']) {
-      if (member != entity) {
-        this._hass.callService('media_player', 'volume_up', {
-          entity_id: member,
-        });
-      }
-    }
-  }
-
-  _volumeSet(entity: string, volume: number): void {
-    const volumeFloat = volume / 100;
-    this._hass.callService('media_player', 'volume_set', {
-      entity_id: entity,
-      volume_level: volumeFloat,
-    });
-
-    for (const member in this._hass.states[entity].attributes['sonos_group']) {
-      if (member != entity) {
-        this._hass.callService('media_player', 'volume_set', {
-          entity_id: member,
-          volume_level: volumeFloat,
-        });
-      }
-    }
-  }
-
-  _sourceSet(e): void {
-    if (e.target.dataset && e.target.dataset.favorite) {
-      this._hass.callService('media_player', 'select_source', {
-        source: e.target.dataset.favorite,
-        entity_id: this.active,
-      });
-    }
-  }
-  _join(e): void {
-    if (e.target.dataset && e.target.dataset.member) {
-      this._hass.callService('sonos', 'join', {
-        master: this.active,
-        entity_id: e.target.dataset.member,
-      });
-    }
-  }
-  _unjoin(e): void {
-    if (e.target.dataset && e.target.dataset.member) {
-      this._hass.callService('sonos', 'unjoin', {
-        master: this.active,
-        entity_id: e.target.dataset.member,
-      });
-    }
-  }
-
-  setConfig(config: Config): void {
-    if (!config.entities) {
-      throw new Error('You need to define entities');
-    }
-    this.config = config;
-  }
-
-  getCardSize(): number {
+  public getCardSize(): number {
     return 1;
   }
 
-
-
   private async fetchCover(entity: HassEntity): Promise<string | null> {
     if (entity.attributes.entity_picture) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const url: string = (this._hass as any).hassUrl(entity.attributes.entity_picture);
       try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const url: string = entity.attributes.entity_picture_local ? (this._hass as any)._hassUrl(entity.attributes.entity_picture) : entity.attributes.entity_picture;
         const res = await fetch(new Request(url));
         const buffer: ArrayBuffer = await res.arrayBuffer();
         const image64 = arrayBufferToBase64(buffer);
         const imageType = res.headers.get('Content-Type') || 'image/jpeg';
         return `url(data:${imageType};base64,${image64})`;
       } catch (error) {
-        console.error("Fetch covers failed: " + error);
+        console.debug("Fetch covers failed: " + error);
       }
     }
     return null;
@@ -376,14 +394,21 @@ class SonosCard extends LitElement {
 
   private async renderCover(entity: HassEntity): Promise<TemplateResult<1 | 2>> {
     const cover: string | null = await this.fetchCover(entity);
-    if (this.config.background === 'cover' && cover) {
-      const artworkStyle: StyleInfo = {
+    let style: StyleInfo;
+    if (this.config.background === 'cover' && cover && cover.length > 0) {
+      style = {
         backgroundImage: cover,
         width: '100%'
       };
-      return html`<div class='entity__cover' style=${styleMap(artworkStyle)}></div>`;
     }
-    return html``;
+    else {
+      // fallback to background color
+      style = {
+        background: 'var(--sns-player-background, #fff)',
+        width: '100%'
+      }
+    }
+    return html`<div class='entity__cover' style=${styleMap(style)}></div>`;
   }
 
   private async renderIcon(entity: HassEntity) {

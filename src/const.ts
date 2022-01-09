@@ -1,5 +1,7 @@
 export const CARD_VERSION = '2.0.0-beta3';
 
+export const STATE_PROPERTIES = [ 'entities', 'active' ];
+
 export const ICONS = {
   MUTE: {
     true: 'mdi:volume-off',

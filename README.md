@@ -1,9 +1,12 @@
 # Sonos custom card
 Customize media player for sonos speakers!<br>
 Heavily based on https://github.com/DBuit/sonos-card<br>
+But with some extras:
+* responsive design
+* using covers as background and icons
+* stylable with css variables
 
 ## Features:
-
 * Group/Ungroup speakers
 * Control multiple speaker
 * Play favorites from list
@@ -17,22 +20,19 @@ Heavily based on https://github.com/DBuit/sonos-card<br>
 views:
 - title: "Sonos"
     icon: mdi:speaker
-    id: muziek
+    id: music
     panel: true
     cards:
-      - type: "custom:custom-sonos-card"
+      - type: "custom:sonos-card"
         name: "Sonos"
+        background: cover
         entities:
           - media_player.player1
           - media_player.player2
 ```
 
-This card requires `type: module`.
-```yaml
-resources:
-  - url: /local/custom-sonos-card.js?v=1.0
-    type: module
-```
+## Installation
+Use HACS.
 
 </details>
 
