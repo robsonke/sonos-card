@@ -10,8 +10,7 @@ export const styles = css`
     --sns-card-header-font-family: var(--ha-card-header-font-family, inherit);
     --sns-card-header-font-size: var(--ha-card-header-font-size, 24px);
 
-    --sns-button-size-width: 100px;
-    --sns-button-size-height: 80px;
+    --sns-group-button-size-width: 150px;
     --sns-artwork-opacity: 1;
     --sns-button-icon-color: var(--paper-item-icon-color, var(--primary-color, rgba(211, 3, 32, 0.95)));
 
@@ -28,7 +27,7 @@ export const styles = css`
 
   .container {
     display: grid;
-    grid-template-columns: 0.4fr 1.6fr;
+    grid-template-columns: auto 1fr;
     grid-template-rows: 1.5fr 0.5fr;
     gap: 1em 1em;
     grid-auto-flow: row;
@@ -40,6 +39,7 @@ export const styles = css`
   div.container div.players {
     grid-area: players;
     display: flex;
+    row-gap: 1rem;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -75,11 +75,11 @@ export const styles = css`
   div.playlists {
     grid-area: playlists;
     display: flex;
+    column-gap: 1rem;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
   }
-
 
   @media (max-width: 800px) {
     .container {
@@ -92,19 +92,6 @@ export const styles = css`
       grid-template-rows: 1fr 3fr 1fr 1fr;
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -122,18 +109,6 @@ export const styles = css`
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
-  // .players {
-  //   margin: 3px 5px;
-  //   width: 382px;
-  // }
-  // .player__container {
-  //   position: relative;
-  //   margin: 0;
-  //   background: var(--sns-player-background, #fff);
-  //   border-radius: 12px;
-  //   box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
-  // }
 
   .player__body {
     position: relative;
@@ -392,28 +367,15 @@ export const styles = css`
     opacity: 0.9;
   }
 
-  // .center {
-  //   margin: 2rem auto;
-  //   display: flex;
-  //   flex-direction: row;
-  //   justify-content: center;
-  // }
-
-  // .players {
-  //   margin: 0;
-  //   padding: 0;
-  //   width: auto;
-  // }
   .players > .group {
     padding: 0;
     margin: 0;
     flex-grow: 1;
+    max-height: 100px;
   }
   .group .wrap {
     cursor: pointer;
-    display: inline-block;
-    width: var(--sns-button-size-width);
-    min-height: var(--sns-button-size-height);
+    width: var(--sns-group-button-size-width);
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
     position: relative;
@@ -421,7 +383,6 @@ export const styles = css`
     touch-action: auto !important;
     padding: 10px;
     border-radius: 12px;
-    margin: 3px;
     overflow: hidden;
   }
   .group .wrap.active {
@@ -474,7 +435,6 @@ export const styles = css`
     color: rgba(0, 0, 0, 0.4);
     text-transform: capitalize;
     float: left;
-    white-space: nowrap;
     pointer-events: none;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -539,23 +499,10 @@ export const styles = css`
     color: rgb(0, 0, 0);
   }
 
-  // .extra-players {
-  //   width: auto;
-  //   margin: 0;
-  //   padding: 0;
-  // }
-  // ul.members {
-  //   list-style: none;
-  //   padding: 0;
-  //   margin: 0;
-  // }
-  // ul.members > li {
-  //   padding: 0;
-  //   margin: 0;
-  // }
   div.members {
     display: flex;
-    width: 100%
+    height: 100%;
+    column-gap: 1rem;
     flex-direction: row;
     justify-content: space-between;
   }
@@ -564,8 +511,6 @@ export const styles = css`
     cursor: pointer;
     display: inline-block;
     flex-grow: 1;
-    //width: var(--sns-button-size-width);
-    height: 50px;
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
     position: relative;
@@ -573,10 +518,9 @@ export const styles = css`
     touch-action: auto !important;
     padding: 10px;
     border-radius: 12px;
-    margin: 3px;
     overflow: hidden;
   }
-  //ul.members > li
+
   .member .member-inner {
     display: flex;
     flex-direction: column;
@@ -615,12 +559,11 @@ export const styles = css`
     color: var(--sns-button-icon-color);
   }
 
-
   div.playlists > .favorite {
     cursor: pointer;
     display: inline-block;
-    width: var(--sns-button-size-width);
-    height: 80px;
+    flex: 1 1 0;
+    height: 6rem;
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
     position: relative;
@@ -628,7 +571,6 @@ export const styles = css`
     touch-action: auto !important;
     padding: 10px;
     border-radius: 12px;
-    margin: 3px;
     overflow: hidden;
   }
   div.playlists > .favorite .favorite-inner {

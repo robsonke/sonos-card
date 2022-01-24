@@ -28,7 +28,7 @@ function t(t,e,i,s){var o,r=arguments.length,n=r<3?e:null===s?s=Object.getOwnPro
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-var v;u.finalized=!0,u.elementProperties=new Map,u.elementStyles=[],u.shadowRootOptions={mode:"open"},null==c||c({ReactiveElement:u}),(null!==(n=globalThis.reactiveElementVersions)&&void 0!==n?n:globalThis.reactiveElementVersions=[]).push("1.0.2");const f=globalThis.trustedTypes,g=f?f.createPolicy("lit-html",{createHTML:t=>t}):void 0,m=`lit$${(Math.random()+"").slice(9)}$`,_="?"+m,b=`<${_}>`,y=document,$=(t="")=>y.createComment(t),w=t=>null===t||"object"!=typeof t&&"function"!=typeof t,x=Array.isArray,A=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,k=/-->/g,S=/>/g,C=/>|[ 	\n\r](?:([^\s"'>=/]+)([ 	\n\r]*=[ 	\n\r]*(?:[^ 	\n\r"'`<>=]|("|')|))|$)/g,E=/'/g,U=/"/g,z=/^(?:script|style|textarea)$/i,P=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),T=Symbol.for("lit-noChange"),N=Symbol.for("lit-nothing"),O=new WeakMap,H=y.createTreeWalker(y,129,null,!1),R=(t,e)=>{const i=t.length-1,s=[];let o,r=2===e?"<svg>":"",n=A;for(let e=0;e<i;e++){const i=t[e];let a,l,c=-1,d=0;for(;d<i.length&&(n.lastIndex=d,l=n.exec(i),null!==l);)d=n.lastIndex,n===A?"!--"===l[1]?n=k:void 0!==l[1]?n=S:void 0!==l[2]?(z.test(l[2])&&(o=RegExp("</"+l[2],"g")),n=C):void 0!==l[3]&&(n=C):n===C?">"===l[0]?(n=null!=o?o:A,c=-1):void 0===l[1]?c=-2:(c=n.lastIndex-l[2].length,a=l[1],n=void 0===l[3]?C:'"'===l[3]?U:E):n===U||n===E?n=C:n===k||n===S?n=A:(n=C,o=void 0);const h=n===C&&t[e+1].startsWith("/>")?" ":"";r+=n===A?i+b:c>=0?(s.push(a),i.slice(0,c)+"$lit$"+i.slice(c)+m+h):i+m+(-2===c?(s.push(void 0),e):h)}const a=r+(t[i]||"<?>")+(2===e?"</svg>":"");return[void 0!==g?g.createHTML(a):a,s]};class M{constructor({strings:t,_$litType$:e},i){let s;this.parts=[];let o=0,r=0;const n=t.length-1,a=this.parts,[l,c]=R(t,e);if(this.el=M.createElement(l,i),H.currentNode=this.el.content,2===e){const t=this.el.content,e=t.firstChild;e.remove(),t.append(...e.childNodes)}for(;null!==(s=H.nextNode())&&a.length<n;){if(1===s.nodeType){if(s.hasAttributes()){const t=[];for(const e of s.getAttributeNames())if(e.endsWith("$lit$")||e.startsWith(m)){const i=c[r++];if(t.push(e),void 0!==i){const t=s.getAttribute(i.toLowerCase()+"$lit$").split(m),e=/([.?@])?(.*)/.exec(i);a.push({type:1,index:o,name:e[2],strings:t,ctor:"."===e[1]?B:"?"===e[1]?q:"@"===e[1]?K:L})}else a.push({type:6,index:o})}for(const e of t)s.removeAttribute(e)}if(z.test(s.tagName)){const t=s.textContent.split(m),e=t.length-1;if(e>0){s.textContent=f?f.emptyScript:"";for(let i=0;i<e;i++)s.append(t[i],$()),H.nextNode(),a.push({type:2,index:++o});s.append(t[e],$())}}}else if(8===s.nodeType)if(s.data===_)a.push({type:2,index:o});else{let t=-1;for(;-1!==(t=s.data.indexOf(m,t+1));)a.push({type:7,index:o}),t+=m.length-1}o++}}static createElement(t,e){const i=y.createElement("template");return i.innerHTML=t,i}}function j(t,e,i=t,s){var o,r,n,a;if(e===T)return e;let l=void 0!==s?null===(o=i._$Cl)||void 0===o?void 0:o[s]:i._$Cu;const c=w(e)?void 0:e._$litDirective$;return(null==l?void 0:l.constructor)!==c&&(null===(r=null==l?void 0:l._$AO)||void 0===r||r.call(l,!1),void 0===c?l=void 0:(l=new c(t),l._$AT(t,i,s)),void 0!==s?(null!==(n=(a=i)._$Cl)&&void 0!==n?n:a._$Cl=[])[s]=l:i._$Cu=l),void 0!==l&&(e=j(t,l._$AS(t,e.values),l,s)),e}class D{constructor(t,e){this.v=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}p(t){var e;const{el:{content:i},parts:s}=this._$AD,o=(null!==(e=null==t?void 0:t.creationScope)&&void 0!==e?e:y).importNode(i,!0);H.currentNode=o;let r=H.nextNode(),n=0,a=0,l=s[0];for(;void 0!==l;){if(n===l.index){let e;2===l.type?e=new I(r,r.nextSibling,this,t):1===l.type?e=new l.ctor(r,l.name,l.strings,this,t):6===l.type&&(e=new G(r,this,t)),this.v.push(e),l=s[++a]}n!==(null==l?void 0:l.index)&&(r=H.nextNode(),n++)}return o}m(t){let e=0;for(const i of this.v)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class I{constructor(t,e,i,s){var o;this.type=2,this._$AH=N,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=s,this._$Cg=null===(o=null==s?void 0:s.isConnected)||void 0===o||o}get _$AU(){var t,e;return null!==(e=null===(t=this._$AM)||void 0===t?void 0:t._$AU)&&void 0!==e?e:this._$Cg}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=j(this,t,e),w(t)?t===N||null==t||""===t?(this._$AH!==N&&this._$AR(),this._$AH=N):t!==this._$AH&&t!==T&&this.$(t):void 0!==t._$litType$?this.T(t):void 0!==t.nodeType?this.S(t):(t=>{var e;return x(t)||"function"==typeof(null===(e=t)||void 0===e?void 0:e[Symbol.iterator])})(t)?this.M(t):this.$(t)}A(t,e=this._$AB){return this._$AA.parentNode.insertBefore(t,e)}S(t){this._$AH!==t&&(this._$AR(),this._$AH=this.A(t))}$(t){this._$AH!==N&&w(this._$AH)?this._$AA.nextSibling.data=t:this.S(y.createTextNode(t)),this._$AH=t}T(t){var e;const{values:i,_$litType$:s}=t,o="number"==typeof s?this._$AC(t):(void 0===s.el&&(s.el=M.createElement(s.h,this.options)),s);if((null===(e=this._$AH)||void 0===e?void 0:e._$AD)===o)this._$AH.m(i);else{const t=new D(o,this),e=t.p(this.options);t.m(i),this.S(e),this._$AH=t}}_$AC(t){let e=O.get(t.strings);return void 0===e&&O.set(t.strings,e=new M(t)),e}M(t){x(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,s=0;for(const o of t)s===e.length?e.push(i=new I(this.A($()),this.A($()),this,this.options)):i=e[s],i._$AI(o),s++;s<e.length&&(this._$AR(i&&i._$AB.nextSibling,s),e.length=s)}_$AR(t=this._$AA.nextSibling,e){var i;for(null===(i=this._$AP)||void 0===i||i.call(this,!1,!0,e);t&&t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){var e;void 0===this._$AM&&(this._$Cg=t,null===(e=this._$AP)||void 0===e||e.call(this,t))}}class L{constructor(t,e,i,s,o){this.type=1,this._$AH=N,this._$AN=void 0,this.element=t,this.name=e,this._$AM=s,this.options=o,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=N}get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}_$AI(t,e=this,i,s){const o=this.strings;let r=!1;if(void 0===o)t=j(this,t,e,0),r=!w(t)||t!==this._$AH&&t!==T,r&&(this._$AH=t);else{const s=t;let n,a;for(t=o[0],n=0;n<o.length-1;n++)a=j(this,s[i+n],e,n),a===T&&(a=this._$AH[n]),r||(r=!w(a)||a!==this._$AH[n]),a===N?t=N:t!==N&&(t+=(null!=a?a:"")+o[n+1]),this._$AH[n]=a}r&&!s&&this.k(t)}k(t){t===N?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,null!=t?t:"")}}class B extends L{constructor(){super(...arguments),this.type=3}k(t){this.element[this.name]=t===N?void 0:t}}const V=f?f.emptyScript:"";class q extends L{constructor(){super(...arguments),this.type=4}k(t){t&&t!==N?this.element.setAttribute(this.name,V):this.element.removeAttribute(this.name)}}class K extends L{constructor(t,e,i,s,o){super(t,e,i,s,o),this.type=5}_$AI(t,e=this){var i;if((t=null!==(i=j(this,t,e,0))&&void 0!==i?i:N)===T)return;const s=this._$AH,o=t===N&&s!==N||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,r=t!==N&&(s===N||o);o&&this.element.removeEventListener(this.name,this,s),r&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){var e,i;"function"==typeof this._$AH?this._$AH.call(null!==(i=null===(e=this.options)||void 0===e?void 0:e.host)&&void 0!==i?i:this.element,t):this._$AH.handleEvent(t)}}class G{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){j(this,t)}}const Y=window.litHtmlPolyfillSupport;
+var v;u.finalized=!0,u.elementProperties=new Map,u.elementStyles=[],u.shadowRootOptions={mode:"open"},null==c||c({ReactiveElement:u}),(null!==(n=globalThis.reactiveElementVersions)&&void 0!==n?n:globalThis.reactiveElementVersions=[]).push("1.0.2");const f=globalThis.trustedTypes,g=f?f.createPolicy("lit-html",{createHTML:t=>t}):void 0,_=`lit$${(Math.random()+"").slice(9)}$`,m="?"+_,b=`<${m}>`,y=document,$=(t="")=>y.createComment(t),w=t=>null===t||"object"!=typeof t&&"function"!=typeof t,x=Array.isArray,A=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,k=/-->/g,S=/>/g,C=/>|[ 	\n\r](?:([^\s"'>=/]+)([ 	\n\r]*=[ 	\n\r]*(?:[^ 	\n\r"'`<>=]|("|')|))|$)/g,E=/'/g,U=/"/g,P=/^(?:script|style|textarea)$/i,z=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),T=Symbol.for("lit-noChange"),N=Symbol.for("lit-nothing"),O=new WeakMap,H=y.createTreeWalker(y,129,null,!1),R=(t,e)=>{const i=t.length-1,s=[];let o,r=2===e?"<svg>":"",n=A;for(let e=0;e<i;e++){const i=t[e];let a,l,c=-1,d=0;for(;d<i.length&&(n.lastIndex=d,l=n.exec(i),null!==l);)d=n.lastIndex,n===A?"!--"===l[1]?n=k:void 0!==l[1]?n=S:void 0!==l[2]?(P.test(l[2])&&(o=RegExp("</"+l[2],"g")),n=C):void 0!==l[3]&&(n=C):n===C?">"===l[0]?(n=null!=o?o:A,c=-1):void 0===l[1]?c=-2:(c=n.lastIndex-l[2].length,a=l[1],n=void 0===l[3]?C:'"'===l[3]?U:E):n===U||n===E?n=C:n===k||n===S?n=A:(n=C,o=void 0);const h=n===C&&t[e+1].startsWith("/>")?" ":"";r+=n===A?i+b:c>=0?(s.push(a),i.slice(0,c)+"$lit$"+i.slice(c)+_+h):i+_+(-2===c?(s.push(void 0),e):h)}const a=r+(t[i]||"<?>")+(2===e?"</svg>":"");return[void 0!==g?g.createHTML(a):a,s]};class M{constructor({strings:t,_$litType$:e},i){let s;this.parts=[];let o=0,r=0;const n=t.length-1,a=this.parts,[l,c]=R(t,e);if(this.el=M.createElement(l,i),H.currentNode=this.el.content,2===e){const t=this.el.content,e=t.firstChild;e.remove(),t.append(...e.childNodes)}for(;null!==(s=H.nextNode())&&a.length<n;){if(1===s.nodeType){if(s.hasAttributes()){const t=[];for(const e of s.getAttributeNames())if(e.endsWith("$lit$")||e.startsWith(_)){const i=c[r++];if(t.push(e),void 0!==i){const t=s.getAttribute(i.toLowerCase()+"$lit$").split(_),e=/([.?@])?(.*)/.exec(i);a.push({type:1,index:o,name:e[2],strings:t,ctor:"."===e[1]?B:"?"===e[1]?q:"@"===e[1]?K:L})}else a.push({type:6,index:o})}for(const e of t)s.removeAttribute(e)}if(P.test(s.tagName)){const t=s.textContent.split(_),e=t.length-1;if(e>0){s.textContent=f?f.emptyScript:"";for(let i=0;i<e;i++)s.append(t[i],$()),H.nextNode(),a.push({type:2,index:++o});s.append(t[e],$())}}}else if(8===s.nodeType)if(s.data===m)a.push({type:2,index:o});else{let t=-1;for(;-1!==(t=s.data.indexOf(_,t+1));)a.push({type:7,index:o}),t+=_.length-1}o++}}static createElement(t,e){const i=y.createElement("template");return i.innerHTML=t,i}}function j(t,e,i=t,s){var o,r,n,a;if(e===T)return e;let l=void 0!==s?null===(o=i._$Cl)||void 0===o?void 0:o[s]:i._$Cu;const c=w(e)?void 0:e._$litDirective$;return(null==l?void 0:l.constructor)!==c&&(null===(r=null==l?void 0:l._$AO)||void 0===r||r.call(l,!1),void 0===c?l=void 0:(l=new c(t),l._$AT(t,i,s)),void 0!==s?(null!==(n=(a=i)._$Cl)&&void 0!==n?n:a._$Cl=[])[s]=l:i._$Cu=l),void 0!==l&&(e=j(t,l._$AS(t,e.values),l,s)),e}class D{constructor(t,e){this.v=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}p(t){var e;const{el:{content:i},parts:s}=this._$AD,o=(null!==(e=null==t?void 0:t.creationScope)&&void 0!==e?e:y).importNode(i,!0);H.currentNode=o;let r=H.nextNode(),n=0,a=0,l=s[0];for(;void 0!==l;){if(n===l.index){let e;2===l.type?e=new I(r,r.nextSibling,this,t):1===l.type?e=new l.ctor(r,l.name,l.strings,this,t):6===l.type&&(e=new G(r,this,t)),this.v.push(e),l=s[++a]}n!==(null==l?void 0:l.index)&&(r=H.nextNode(),n++)}return o}m(t){let e=0;for(const i of this.v)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class I{constructor(t,e,i,s){var o;this.type=2,this._$AH=N,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=s,this._$Cg=null===(o=null==s?void 0:s.isConnected)||void 0===o||o}get _$AU(){var t,e;return null!==(e=null===(t=this._$AM)||void 0===t?void 0:t._$AU)&&void 0!==e?e:this._$Cg}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=j(this,t,e),w(t)?t===N||null==t||""===t?(this._$AH!==N&&this._$AR(),this._$AH=N):t!==this._$AH&&t!==T&&this.$(t):void 0!==t._$litType$?this.T(t):void 0!==t.nodeType?this.S(t):(t=>{var e;return x(t)||"function"==typeof(null===(e=t)||void 0===e?void 0:e[Symbol.iterator])})(t)?this.M(t):this.$(t)}A(t,e=this._$AB){return this._$AA.parentNode.insertBefore(t,e)}S(t){this._$AH!==t&&(this._$AR(),this._$AH=this.A(t))}$(t){this._$AH!==N&&w(this._$AH)?this._$AA.nextSibling.data=t:this.S(y.createTextNode(t)),this._$AH=t}T(t){var e;const{values:i,_$litType$:s}=t,o="number"==typeof s?this._$AC(t):(void 0===s.el&&(s.el=M.createElement(s.h,this.options)),s);if((null===(e=this._$AH)||void 0===e?void 0:e._$AD)===o)this._$AH.m(i);else{const t=new D(o,this),e=t.p(this.options);t.m(i),this.S(e),this._$AH=t}}_$AC(t){let e=O.get(t.strings);return void 0===e&&O.set(t.strings,e=new M(t)),e}M(t){x(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,s=0;for(const o of t)s===e.length?e.push(i=new I(this.A($()),this.A($()),this,this.options)):i=e[s],i._$AI(o),s++;s<e.length&&(this._$AR(i&&i._$AB.nextSibling,s),e.length=s)}_$AR(t=this._$AA.nextSibling,e){var i;for(null===(i=this._$AP)||void 0===i||i.call(this,!1,!0,e);t&&t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){var e;void 0===this._$AM&&(this._$Cg=t,null===(e=this._$AP)||void 0===e||e.call(this,t))}}class L{constructor(t,e,i,s,o){this.type=1,this._$AH=N,this._$AN=void 0,this.element=t,this.name=e,this._$AM=s,this.options=o,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=N}get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}_$AI(t,e=this,i,s){const o=this.strings;let r=!1;if(void 0===o)t=j(this,t,e,0),r=!w(t)||t!==this._$AH&&t!==T,r&&(this._$AH=t);else{const s=t;let n,a;for(t=o[0],n=0;n<o.length-1;n++)a=j(this,s[i+n],e,n),a===T&&(a=this._$AH[n]),r||(r=!w(a)||a!==this._$AH[n]),a===N?t=N:t!==N&&(t+=(null!=a?a:"")+o[n+1]),this._$AH[n]=a}r&&!s&&this.k(t)}k(t){t===N?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,null!=t?t:"")}}class B extends L{constructor(){super(...arguments),this.type=3}k(t){this.element[this.name]=t===N?void 0:t}}const V=f?f.emptyScript:"";class q extends L{constructor(){super(...arguments),this.type=4}k(t){t&&t!==N?this.element.setAttribute(this.name,V):this.element.removeAttribute(this.name)}}class K extends L{constructor(t,e,i,s,o){super(t,e,i,s,o),this.type=5}_$AI(t,e=this){var i;if((t=null!==(i=j(this,t,e,0))&&void 0!==i?i:N)===T)return;const s=this._$AH,o=t===N&&s!==N||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,r=t!==N&&(s===N||o);o&&this.element.removeEventListener(this.name,this,s),r&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){var e,i;"function"==typeof this._$AH?this._$AH.call(null!==(i=null===(e=this.options)||void 0===e?void 0:e.host)&&void 0!==i?i:this.element,t):this._$AH.handleEvent(t)}}class G{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){j(this,t)}}const Y=window.litHtmlPolyfillSupport;
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -85,8 +85,7 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     --sns-card-header-font-family: var(--ha-card-header-font-family, inherit);
     --sns-card-header-font-size: var(--ha-card-header-font-size, 24px);
 
-    --sns-button-size-width: 100px;
-    --sns-button-size-height: 80px;
+    --sns-group-button-size-width: 150px;
     --sns-artwork-opacity: 1;
     --sns-button-icon-color: var(--paper-item-icon-color, var(--primary-color, rgba(211, 3, 32, 0.95)));
 
@@ -103,7 +102,7 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
 
   .container {
     display: grid;
-    grid-template-columns: 0.4fr 1.6fr;
+    grid-template-columns: auto 1fr;
     grid-template-rows: 1.5fr 0.5fr;
     gap: 1em 1em;
     grid-auto-flow: row;
@@ -115,6 +114,7 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
   div.container div.players {
     grid-area: players;
     display: flex;
+    row-gap: 1rem;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -150,11 +150,11 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
   div.playlists {
     grid-area: playlists;
     display: flex;
+    column-gap: 1rem;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
   }
-
 
   @media (max-width: 800px) {
     .container {
@@ -167,19 +167,6 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
       grid-template-rows: 1fr 3fr 1fr 1fr;
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -197,18 +184,6 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
-  // .players {
-  //   margin: 3px 5px;
-  //   width: 382px;
-  // }
-  // .player__container {
-  //   position: relative;
-  //   margin: 0;
-  //   background: var(--sns-player-background, #fff);
-  //   border-radius: 12px;
-  //   box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
-  // }
 
   .player__body {
     position: relative;
@@ -467,18 +442,6 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     opacity: 0.9;
   }
 
-  // .center {
-  //   margin: 2rem auto;
-  //   display: flex;
-  //   flex-direction: row;
-  //   justify-content: center;
-  // }
-
-  // .players {
-  //   margin: 0;
-  //   padding: 0;
-  //   width: auto;
-  // }
   .players > .group {
     padding: 0;
     margin: 0;
@@ -486,9 +449,7 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
   }
   .group .wrap {
     cursor: pointer;
-    display: inline-block;
-    width: var(--sns-button-size-width);
-    min-height: var(--sns-button-size-height);
+    width: var(--sns-group-button-size-width);
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
     position: relative;
@@ -496,7 +457,6 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     touch-action: auto !important;
     padding: 10px;
     border-radius: 12px;
-    margin: 3px;
     overflow: hidden;
   }
   .group .wrap.active {
@@ -549,7 +509,6 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     color: rgba(0, 0, 0, 0.4);
     text-transform: capitalize;
     float: left;
-    white-space: nowrap;
     pointer-events: none;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -614,23 +573,10 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     color: rgb(0, 0, 0);
   }
 
-  // .extra-players {
-  //   width: auto;
-  //   margin: 0;
-  //   padding: 0;
-  // }
-  // ul.members {
-  //   list-style: none;
-  //   padding: 0;
-  //   margin: 0;
-  // }
-  // ul.members > li {
-  //   padding: 0;
-  //   margin: 0;
-  // }
   div.members {
     display: flex;
-    width: 100%
+    height: 100%;
+    column-gap: 1rem;
     flex-direction: row;
     justify-content: space-between;
   }
@@ -639,8 +585,6 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     cursor: pointer;
     display: inline-block;
     flex-grow: 1;
-    //width: var(--sns-button-size-width);
-    height: 50px;
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
     position: relative;
@@ -648,10 +592,9 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     touch-action: auto !important;
     padding: 10px;
     border-radius: 12px;
-    margin: 3px;
     overflow: hidden;
   }
-  //ul.members > li
+
   .member .member-inner {
     display: flex;
     flex-direction: column;
@@ -690,12 +633,11 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     color: var(--sns-button-icon-color);
   }
 
-
   div.playlists > .favorite {
     cursor: pointer;
     display: inline-block;
-    width: var(--sns-button-size-width);
-    height: 80px;
+    flex: 1 1 0;
+    height: 6rem;
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
     position: relative;
@@ -703,7 +645,6 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     touch-action: auto !important;
     padding: 10px;
     border-radius: 12px;
-    margin: 3px;
     overflow: hidden;
   }
   div.playlists > .favorite .favorite-inner {
@@ -754,12 +695,12 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
     }
   }
 
-`,mt=["entities","active"],_t="mdi:skip-next",bt={playing:"mdi:pause",paused:"mdi:play"},yt="mdi:skip-previous";console.info("%c SONOS-CARD \n%c Version: 2.0.0-beta3    ","color: red; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray"),window.customCards=window.customCards||[],window.customCards.push({type:"sonos-card",name:"Sonos-Card",preview:!1,description:"A responsive Sonos card with support for groups and playlists"});let $t=class extends Z{constructor(){super(),this.entities={},this.active=""}setConfig(t){if(!t.entities)throw new Error("You need to define entities");this.config=Object.assign({name:"Sonos"},t)}set hass(t){if(!t)return;this._hass=t;let e=!1;for(const t of this.config.entities){const i=this._hass.states[t],s=this.entities[t];s?i&&JSON.stringify(s)!==JSON.stringify(i)&&(console.log("entity changed!"),this.entities[t]=i,e=!0):(this.entities[t]=i,e=!0)}e&&this.requestUpdate("entities")}shouldUpdate(t){if(!this.config)return!1;return mt.some((e=>t.has(e)))}render(){console.log("RERENDER!!!!!!!");const t=[],e=[];let i=!0;for(const s of this.config.entities){const o=this._hass.states[s];if(i){i=!1;for(const t of o.attributes.source_list)e.push(t)}t[s]=o.attributes.friendly_name,o.attributes.sonos_group.length>1&&o.attributes.sonos_group[0]==s?"playing"==o.state&&""==this.active&&(this.active=s):1==o.attributes.sonos_group.length&&"playing"==o.state&&""==this.active&&(this.active=s)}return""===this.active&&this.config.entities.length>0&&(this.active=this.config.entities[0]),P`
+`,_t=["entities","active"],mt="mdi:skip-next",bt={playing:"mdi:pause",paused:"mdi:play"},yt="mdi:skip-previous";console.info("%c SONOS-CARD \n%c Version: 2.0.0-beta3    ","color: red; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray"),window.customCards=window.customCards||[],window.customCards.push({type:"sonos-card",name:"Sonos-Card",preview:!1,description:"A responsive Sonos card with support for groups and playlists"});let $t=class extends Z{constructor(){super(),this.entities={},this.active=""}setConfig(t){if(!t.entities)throw new Error("You need to define entities");this.config=Object.assign({name:"Sonos"},t)}set hass(t){if(!t)return;this._hass=t;let e=!1;for(const t of this.config.entities){const i=this._hass.states[t],s=this.entities[t];s?i&&JSON.stringify(s)!==JSON.stringify(i)&&(console.log("entity changed!"),this.entities[t]=i,e=!0):(this.entities[t]=i,e=!0)}e&&this.requestUpdate("entities")}shouldUpdate(t){if(!this.config)return!1;return _t.some((e=>t.has(e)))}render(){console.log("RERENDER!!!!!!!");const t=[],e=[];let i=!0;for(const s of this.config.entities){const o=this._hass.states[s];if(i){i=!1;for(const t of o.attributes.source_list)e.push(t)}t[s]=o.attributes.friendly_name,o.attributes.sonos_group.length>1&&o.attributes.sonos_group[0]==s?"playing"==o.state&&""==this.active&&(this.active=s):1==o.attributes.sonos_group.length&&"playing"==o.state&&""==this.active&&(this.active=s)}return""===this.active&&this.config.entities.length>0&&(this.active=this.config.entities[0]),z`
       <ha-card
         .header="sonos-card">
         <div class="container">
           <div class="players">
-            ${this.config.entities.map((e=>{const i=this._hass.states[e];return 1==i.attributes.sonos_group.length||i.attributes.sonos_group.length>1&&i.attributes.sonos_group[0]==e?P`
+            ${this.config.entities.map((e=>{const i=this._hass.states[e];return 1==i.attributes.sonos_group.length||i.attributes.sonos_group.length>1&&i.attributes.sonos_group[0]==e?z`
                   <div class="group" data-entity="${e}" @click="${t=>this.switchGroup(t)}">
                     <div class="wrap ${this.active==e?"active":""}" data-entity="${e}">
                       <div class="inner-wrap">
@@ -771,16 +712,16 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
                           </div>
                         </span>
                         <span class="cover-icon">${ft(this.renderIcon(i))}</span>
-                        ${i.attributes.sonos_group.map((e=>P`<span class="name">${t[e]}</span>`))}
+                        ${i.attributes.sonos_group.map((e=>z`<span class="name">${t[e]}</span>`))}
                         <span class="state">${i.attributes.media_artist} - ${i.attributes.media_title}</span>
                       </div>
                     </div>
                   </div>
-                `:P``}))}
+                `:z``}))}
           </div>
 
           <div class="player-main">
-            ${""!=this.active?P`
+            ${""!=this.active?z`
                   <div class="player">
                     <div class="body__cover">${ft(this.renderCover(this._hass.states[this.active]))}</div>
                     <div class="player__body">
@@ -798,18 +739,18 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
                           </li>
                           <li class="middle">
                             <a class="list__link">
-                              ${"playing"!==this._hass.states[this.active].state?P`
+                              ${"playing"!==this._hass.states[this.active].state?z`
                                   <ha-icon-button class="play-button" @click="${t=>this._play(t,this.active)}" .icon=${bt[this._hass.states[this.active].state]}>
                                     <ha-icon .icon=${bt[this._hass.states[this.active].state]}></ha-icon>
-                                  </ha-icon-button>`:P`
+                                  </ha-icon-button>`:z`
                                   <ha-icon-button class="pause-button" @click="${t=>this._pause(t,this.active)}" .icon=${bt[this._hass.states[this.active].state]}>
                                     <ha-icon .icon=${bt[this._hass.states[this.active].state]}></ha-icon>
                                   </ha-icon-button>`}
                             </a>
                           </li>
                           <li>
-                            <ha-icon-button class="next-button" @click="${t=>this._nextTrack(t,this.active)}" .icon=${_t}>
-                              <ha-icon .icon=${_t}></ha-icon>
+                            <ha-icon-button class="next-button" @click="${t=>this._nextTrack(t,this.active)}" .icon=${mt}>
+                              <ha-icon .icon=${mt}></ha-icon>
                             </ha-icon-button>
                           </li>
                         </ul>
@@ -833,32 +774,32 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
                       </ul>
                     </div>
                   </div>
-              `:P``}
+              `:z``}
 
             <div class="extra-players">
               <div class="members">
-                ${""!=this.active?P`${this._hass.states[this.active].attributes.sonos_group.map((e=>e!=this.active?P`
+                ${""!=this.active?z`${this._hass.states[this.active].attributes.sonos_group.map((e=>e!=this.active?z`
                           <div class="member unjoin-member" data-member="${e}" @click="${t=>this._unjoin(t)}">
                             <div class="member-inner" data-member="${e}">
                               <ha-icon .icon=${"mdi:minus"}></ha-icon>
                               <span>${t[e]} </span>
                             </div>
                           </div>
-                        `:P``))}
-                    ${this.config.entities.map((e=>e==this.active||this._hass.states[this.active].attributes.sonos_group.includes(e)?P``:P`
+                        `:z``))}
+                    ${this.config.entities.map((e=>e==this.active||this._hass.states[this.active].attributes.sonos_group.includes(e)?z``:z`
                           <div class="member join-member" data-member="${e}" @click="${t=>this._join(t)}">
                             <div class="member-inner" data-member="${e}">
                               <ha-icon .icon=${"mdi:plus"}></ha-icon>
                               <span>${t[e]} </span>
                             </div>
                           </div>
-                        `))}`:P``}
+                        `))}`:z``}
               </div>
             </div>
           </div>
 
           <div class="playlists">
-            ${e.map((t=>P`
+            ${e.map((t=>z`
                 <div class="favorite" data-favorite="${t}" @click="${t=>this._sourceSet(t)}">
                   <div class="favorite-inner">
                     <span class="icon" style="">
@@ -871,5 +812,5 @@ const F=(t,e)=>"method"===e.kind&&e.descriptor&&!("value"in e.descriptor)?{...e,
           </div>
         </div>
       </ha-card>
-    `}switchGroup(t){const e=t.target.dataset;(null==e?void 0:e.entity)&&(this.active=null==e?void 0:e.entity)}_pause(t,e){this.callService(t,"media_player","media_pause",e)}_play(t,e){this.callService(t,"media_player","media_play",e)}_nextTrack(t,e){this.callService(t,"media_player","media_next_track",e)}_previousTrack(t,e){this.callService(t,"media_player","media_previous_track",e)}_volumeDown(t,e){this.callService(t,"media_player","volume_down",e,{},this._hass.states[e].attributes.sonos_group)}_volumeUp(t,e){this.callService(t,"media_player","volume_up",e,{},this._hass.states[e].attributes.sonos_group)}_volumeSet(t,e){const i=t.target.value/100;this.callService(t,"media_player","volume_set",e,{volume_level:i},this._hass.states[e].attributes.sonos_group)}_sourceSet(t){const e=t.target.dataset;(null==e?void 0:e.favorite)&&this.callService(t,"media_player","select_source",this.active,{source:e.favorite})}_join(t){const e=t.target.dataset;(null==e?void 0:e.member)&&this.callService(t,"sonos","join",e.member,{master:this.active})}_unjoin(t){const e=t.target.dataset;(null==e?void 0:e.member)&&this.callService(t,"sonos","unjoin",e.member)}callService(t,e,i,s,o={},r=[]){t.stopPropagation(),this._hass.callService(e,i,Object.assign(Object.assign({},s&&{entity_id:s}),o));for(const t in r)t!==s&&this._hass.states[t]&&this._hass.callService(e,i,Object.assign({entity_id:t},o))}getCardSize(){return 1}async fetchCover(t){if(t.attributes.entity_picture)try{const e=t.attributes.entity_picture_local?this._hass._hassUrl(t.attributes.entity_picture):t.attributes.entity_picture,i=await fetch(new Request(e)),s=(t=>{let e="";return[].slice.call(new Uint8Array(t)).forEach((t=>e+=String.fromCharCode(t))),window.btoa(e)})(await i.arrayBuffer());return`url(data:${i.headers.get("Content-Type")||"image/jpeg"};base64,${s})`}catch(t){console.debug("Fetch covers failed: "+t)}return null}async renderCover(t){const e=await this.fetchCover(t);if("cover"===this.config.background&&e&&e.length>0){return P`<div class='entity__cover' style=${ot({backgroundImage:e,width:"100%"})}></div>`}if("cover"===this.config.background&&!e){return P`<div class='entity__cover' style=${ot({background:"var(--sns-player-background, #fff)",width:"100%"})}></div>`}return P``}async renderIcon(t){const e=await this.fetchCover(t);return e?P`
-        <div class='entity__icon' style='background-image: ${e};'></div>`:P``}static get styles(){return gt}};t([X()],$t.prototype,"config",void 0),t([X()],$t.prototype,"entities",void 0),t([X()],$t.prototype,"_hass",void 0),t([X()],$t.prototype,"active",void 0),$t=t([(t=>e=>"function"==typeof e?((t,e)=>(window.customElements.define(t,e),e))(t,e):((t,e)=>{const{kind:i,elements:s}=e;return{kind:i,elements:s,finisher(e){window.customElements.define(t,e)}}})(t,e))("sonos-card")],$t);
+    `}switchGroup(t){const e=t.target.dataset;(null==e?void 0:e.entity)&&(this.active=null==e?void 0:e.entity)}_pause(t,e){this.callService(t,"media_player","media_pause",e)}_play(t,e){this.callService(t,"media_player","media_play",e)}_nextTrack(t,e){this.callService(t,"media_player","media_next_track",e)}_previousTrack(t,e){this.callService(t,"media_player","media_previous_track",e)}_volumeDown(t,e){this.callService(t,"media_player","volume_down",e,{},this._hass.states[e].attributes.sonos_group)}_volumeUp(t,e){this.callService(t,"media_player","volume_up",e,{},this._hass.states[e].attributes.sonos_group)}_volumeSet(t,e){const i=t.target.value/100;this.callService(t,"media_player","volume_set",e,{volume_level:i},this._hass.states[e].attributes.sonos_group)}_sourceSet(t){const e=t.target.dataset;(null==e?void 0:e.favorite)&&this.callService(t,"media_player","select_source",this.active,{source:e.favorite})}_join(t){const e=t.target.dataset;(null==e?void 0:e.member)&&this.callService(t,"sonos","join",e.member,{master:this.active})}_unjoin(t){const e=t.target.dataset;(null==e?void 0:e.member)&&this.callService(t,"sonos","unjoin",e.member)}callService(t,e,i,s,o={},r=[]){t.stopPropagation(),this._hass.callService(e,i,Object.assign(Object.assign({},s&&{entity_id:s}),o));for(const t in r)t!==s&&this._hass.states[t]&&this._hass.callService(e,i,Object.assign({entity_id:t},o))}getCardSize(){return 1}async fetchCover(t){if(t.attributes.entity_picture)try{const e=t.attributes.entity_picture_local?this._hass._hassUrl(t.attributes.entity_picture):t.attributes.entity_picture,i=await fetch(new Request(e)),s=(t=>{let e="";return[].slice.call(new Uint8Array(t)).forEach((t=>e+=String.fromCharCode(t))),window.btoa(e)})(await i.arrayBuffer());return`url(data:${i.headers.get("Content-Type")||"image/jpeg"};base64,${s})`}catch(t){console.debug("Fetch covers failed: "+t)}return null}async renderCover(t){const e=await this.fetchCover(t);let i;return i="cover"===this.config.background&&e&&e.length>0?{backgroundImage:e,width:"100%"}:{background:"var(--sns-player-background, #fff)",width:"100%"},z`<div class='entity__cover' style=${ot(i)}></div>`}async renderIcon(t){const e=await this.fetchCover(t);return e?z`
+        <div class='entity__icon' style='background-image: ${e};'></div>`:z``}static get styles(){return gt}};t([X()],$t.prototype,"config",void 0),t([X()],$t.prototype,"entities",void 0),t([X()],$t.prototype,"_hass",void 0),t([X()],$t.prototype,"active",void 0),$t=t([(t=>e=>"function"==typeof e?((t,e)=>(window.customElements.define(t,e),e))(t,e):((t,e)=>{const{kind:i,elements:s}=e;return{kind:i,elements:s,finisher(e){window.customElements.define(t,e)}}})(t,e))("sonos-card")],$t);
