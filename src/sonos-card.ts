@@ -86,7 +86,6 @@ class SonosCard extends LitElement {
       const cachedEntity = this.entities[entityId];
       if (cachedEntity) {
         if (entity && JSON.stringify(cachedEntity) !== JSON.stringify(entity)) {
-          console.log("entity changed!");
           this.entities[entityId] = entity;
           changed = true;
         }
@@ -112,8 +111,6 @@ class SonosCard extends LitElement {
   }
 
   protected render(): TemplateResult | void {
-    console.log("RERENDER!!!!!!!");
-
     const speakerNames: string[] = [];
     const favorites: string[] = [];
     let first = true;

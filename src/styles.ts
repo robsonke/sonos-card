@@ -15,6 +15,7 @@ export const styles = css`
     --sns-button-icon-color: var(--paper-item-icon-color, var(--primary-color, rgba(211, 3, 32, 0.95)));
 
     --sns-player-background: #fff;
+    --sns-player-button-size: 60px;
 
     background: var(--sns-card-background);
     border-radius: var(--sns-card-border-radius);
@@ -177,7 +178,7 @@ export const styles = css`
     opacity: 0.7;
     -webkit-transition: 0.2s;
     transition: opacity 0.2s;
-    margin: 6px 5px 0 5px;
+    margin: auto;
   }
 
   .list--cover {
@@ -340,6 +341,11 @@ export const styles = css`
     opacity: 0.75;
   }
 
+  div.player-main div.player ha-icon {
+    --mdc-icon-size: var(--sns-player-button-size, 50px);
+  }
+
+
   .list__link {
     -webkit-transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
     transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
@@ -438,6 +444,7 @@ export const styles = css`
     pointer-events: none;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   div.inner-wrap span.cover-icon {
