@@ -116,14 +116,14 @@ class SonosCard extends LitElement {
     let first = true;
     for (const entity of this.config.entities) {
       const stateObj = this._hass.states[entity];
-      //Get favorites list
+      // Get favorites list
       if (first) {
         first = false;
         for (const favorite of stateObj.attributes.source_list) {
           favorites.push(favorite);
         }
       }
-      //Get speakerNames
+      // Get speakerNames
       speakerNames[entity] = stateObj.attributes.friendly_name;
 
       if (stateObj.attributes['sonos_group'].length > 1 && stateObj.attributes['sonos_group'][0] == entity) {
@@ -151,23 +151,19 @@ class SonosCard extends LitElement {
               const stateObj = this._hass.states[entity];
               if (stateObj.attributes['sonos_group'].length == 1 || (stateObj.attributes['sonos_group'].length > 1 && stateObj.attributes['sonos_group'][0] == entity)) {
                 return html`
-                  <div class="group" data-entity="${entity}" @click="${(e: Event) => this.switchGroup(e)}">
-                    <div class="wrap ${this.active == entity ? 'active' : ''}" data-entity="${entity}">
-                      <div class="inner-wrap">
-                        <span class="icon">
-                          <div class="player ${stateObj.state == 'playing' ? 'active' : ''}">
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                          </div>
-                        </span>
-                        <span class="cover-icon">${until(this.renderIcon(stateObj))}</span>
-                        ${stateObj.attributes['sonos_group'].map((speaker: string) => {
-                          return html`<span class="name">${speakerNames[speaker]}</span>`;
-                        })}
-                        <span class="state">${stateObj.attributes.media_artist} - ${stateObj.attributes.media_title}</span>
+                  <div class="group ${this.active == entity ? 'active' : ''}" data-entity="${entity}" @click="${(e: Event) => this.switchGroup(e)}">
+                    <span class="icon">
+                      <div class="player ${stateObj.state == 'playing' ? 'active' : ''}">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
                       </div>
-                    </div>
+                    </span>
+                    <span class="cover-icon">${until(this.renderIcon(stateObj))}</span>
+                    ${stateObj.attributes['sonos_group'].map((speaker: string) => {
+                      return html`<span class="name">${speakerNames[speaker]}</span>`;
+                    })}
+                    <span class="state">${stateObj.attributes.media_artist} - ${stateObj.attributes.media_title}</span>
                   </div>
                 `;
               } else {

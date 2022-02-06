@@ -46,12 +46,6 @@ export const styles = css`
     justify-content: space-between;
   }
 
-  @media (max-width: 800px) {
-    div.container div.players {
-      flex-direction: row;
-    }
-  }
-
   .player-main {
     display: grid;
     grid-template-columns: 1fr;
@@ -76,7 +70,7 @@ export const styles = css`
   div.playlists {
     grid-area: playlists;
     display: flex;
-    column-gap: 1rem;
+    gap: 1rem;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -87,14 +81,11 @@ export const styles = css`
       grid-template-areas:
         "players"
         "player-main"
-        "playlists"
         "playlists";
       grid-template-columns: 1fr;
-      grid-template-rows: 1fr 3fr 1fr 1fr;
+      grid-template-rows: minmax(300px, auto);
     }
   }
-
-
 
   .header {
     color: var(--sns-card-header-color);
@@ -253,12 +244,14 @@ export const styles = css`
     padding-top: 1.5rem;
     padding-bottom: 1.25rem;
     text-align: center;
+    display: flex;
+    min-width: 0;
   }
 
   .info__album,
   .info__song {
+    flex: 1 1 auto;
     margin-bottom: 0.5rem;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -274,6 +267,7 @@ export const styles = css`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex: 1 1 auto;
   }
 
   .info__song {
@@ -368,20 +362,16 @@ export const styles = css`
     opacity: 0.9;
   }
 
-  .shuffle.active {
-    color: var(--sns-button-icon-color);
-    opacity: 0.9;
-  }
-
   .players > .group {
-    padding: 0;
-    margin: 0;
+    display: flex;
     flex-grow: 1;
     max-height: 100px;
-  }
-  .group .wrap {
+    min-width: 0;
+    max-width: calc(var(--sns-group-button-size-width) * 2);
+    flex-basis: calc(var(--sns-group-button-size-width) * 1.5);
+    padding: 0;
+    margin: 0;
     cursor: pointer;
-    width: var(--sns-group-button-size-width);
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
     position: relative;
@@ -390,20 +380,23 @@ export const styles = css`
     padding: 10px;
     border-radius: 12px;
     overflow: hidden;
+    flex-direction: column;
+    height: 100%;
   }
-  .group .wrap.active {
+
+  @media ( max-width: 800px) {
+    .players > .group {
+      max-width: 100%;
+    }
+  }
+
+  .group.active {
     background-color: rgba(255, 255, 255, 1);
   }
 
-  .group .wrap .inner-wrap {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    pointer-events: none;
-  }
-
-  .group .wrap .inner-wrap span.icon {
+  .group span.icon {
     display: block;
+    position: relative;
     height: 40px;
     width: 40px;
     color: var(--sns-button-icon-color);
@@ -413,12 +406,12 @@ export const styles = css`
     text-align: center;
     pointer-events: none;
   }
-  .group .wrap .inner-wrap span.icon ha-icon {
+  .group span.icon ha-icon {
     width: 30px;
     height: 30px;
     pointer-events: none;
   }
-  .group .wrap .inner-wrap span.name {
+  .group span.name {
     font-size: 14px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.4);
@@ -431,11 +424,11 @@ export const styles = css`
     pointer-events: none;
     overflow: hidden;
   }
-  .inner-wrap span:nth-child(2) {
+  .group span:nth-child(2) {
     margin-top: auto;
   }
 
-  .group .wrap .inner-wrap span.state {
+  .group span.state {
     position: relative;
     font-size: 14px;
     color: rgba(0, 0, 0, 0.4);
@@ -444,10 +437,9 @@ export const styles = css`
     pointer-events: none;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
-  div.inner-wrap span.cover-icon {
+  div.group span.cover-icon {
     position: absolute;
     right: 4px;
     top: 4px;
@@ -463,12 +455,6 @@ export const styles = css`
     background-size: cover;
     border-radius: 100%;
     position: relative;
-  }
-
-  .group .player {
-    position: relative;
-    width: 30px;
-    height: 30px;
   }
 
   .group .player .bar {
@@ -510,7 +496,8 @@ export const styles = css`
     display: flex;
     height: 100%;
     column-gap: 1rem;
-    flex-direction: row;
+    row-gap: 1rem;
+    flex-flow: row wrap;
     justify-content: space-between;
   }
 
@@ -569,6 +556,7 @@ export const styles = css`
   div.playlists > .favorite {
     cursor: pointer;
     display: inline-block;
+    min-width: 60px;
     flex: 1 1 0;
     height: 6rem;
     background-color: rgba(255, 255, 255, 0.8);
