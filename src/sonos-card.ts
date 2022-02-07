@@ -33,15 +33,6 @@ type EntityMap = {
   [entityId: string]: HassEntity;
 }
 
-/**
- * TODO:
- * - responsive grid
- * -- button sizes
- * - cover as player background
- * -- fix when no cover
- * - song progress
- * - bigger buttons on player
- */
 @customElement('sonos-card')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class SonosCard extends LitElement {
