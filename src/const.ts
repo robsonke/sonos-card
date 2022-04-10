@@ -1,6 +1,6 @@
-export const CARD_VERSION = '2.0.0-beta3';
+export const CARD_VERSION = '2.0.0-beta4';
 
-export const STATE_PROPERTIES = [ 'entities', 'active' ];
+export const STATE_PROPERTIES = [ 'entities', 'favorites', 'active' ];
 
 export const ICONS = {
   MUTE: {

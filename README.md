@@ -5,6 +5,7 @@ But with some extras:
 * responsive design
 * using covers as background and icons
 * stylable with css variables
+* fixed favorites since HA 2022.4 removed this...
 
 ## Features:
 * Group/Ungroup speakers
@@ -23,6 +24,9 @@ background: cover
 entities:
   - media_player.player1
   - media_player.player2
+favorites:
+  - radio1
+  - radio2
 ```
 
 ## Custom Styling

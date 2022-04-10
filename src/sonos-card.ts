@@ -26,6 +26,7 @@ console.info(
 
 interface Config extends LovelaceCardConfig {
   entities: string[];
+  favorites: string[];
   background: string;
 }
 
@@ -110,7 +111,7 @@ class SonosCard extends LitElement {
       // Get favorites list
       if (first) {
         first = false;
-        for (const favorite of stateObj.attributes.source_list) {
+        for (const favorite of this.config.favorites) {
           favorites.push(favorite);
         }
       }
