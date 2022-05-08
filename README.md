@@ -5,12 +5,15 @@ But with some extras:
 * responsive design
 * using covers as background and icons
 * stylable with css variables
-* fixed favorites since HA 2022.4 removed this...
 
 ## Features:
 * Group/Ungroup speakers
 * Control multiple speaker
 * Play favorites from list
+
+## Requirements
+* Minimal version of HA: 2022.5
+* Make sure you enable the sensor.sonos_favorites entity
 
 ![Screenshot of card](screenshot.jpg)
 
@@ -24,9 +27,6 @@ background: cover
 entities:
   - media_player.player1
   - media_player.player2
-favorites:
-  - radio1
-  - radio2
 ```
 
 ## Custom Styling
