@@ -118,12 +118,12 @@ class SonosCard extends LitElement {
       // Get speakerNames
       speakerNames[entity] = stateObj.attributes.friendly_name;
 
-      if (stateObj.attributes['sonos_group'].length > 1 && stateObj.attributes['sonos_group'][0] == entity) {
+      if (stateObj.attributes['group_members'].length > 1 && stateObj.attributes['group_members'][0] == entity) {
         if (stateObj.state == 'playing' && this.active == '') {
           this.active = entity;
         }
       }
-      else if (stateObj.attributes['sonos_group'].length == 1) {
+      else if (stateObj.attributes['group_members'].length == 1) {
         if (stateObj.state == 'playing' && this.active == '') {
           this.active = entity;
         }
@@ -141,7 +141,7 @@ class SonosCard extends LitElement {
           <div class="players">
             ${this.config.entities.map((entity) => {
               const stateObj = this._hass.states[entity];
-              if (stateObj.attributes['sonos_group'].length == 1 || (stateObj.attributes['sonos_group'].length > 1 && stateObj.attributes['sonos_group'][0] == entity)) {
+              if (stateObj.attributes['group_members'].length == 1 || (stateObj.attributes['group_members'].length > 1 && stateObj.attributes['group_members'][0] == entity)) {
                 return html`
                   <div class="group ${this.active == entity ? 'active' : ''}" data-entity="${entity}" @click="${(e: Event) => this.switchGroup(e)}">
                     <span class="icon">
@@ -152,7 +152,7 @@ class SonosCard extends LitElement {
                       </div>
                     </span>
                     <span class="cover-icon">${until(this.renderIcon(stateObj))}</span>
-                    ${stateObj.attributes['sonos_group'].map((speaker: string) => {
+                    ${stateObj.attributes['group_members'].map((speaker: string) => {
                       return html`<span class="name">${speakerNames[speaker]}</span>`;
                     })}
                     <span class="state">${stateObj.attributes.media_artist} - ${stateObj.attributes.media_title}</span>
@@ -228,7 +228,7 @@ class SonosCard extends LitElement {
             <div class="extra-players">
               <div class="members">
                 ${this.active != ''
-                  ? html`${this._hass.states[this.active].attributes['sonos_group'].map((entity: string) => {
+                  ? html`${this._hass.states[this.active].attributes['group_members'].map((entity: string) => {
                       if (entity != this.active) {
                         return html`
                           <div class="member unjoin-member" data-member="${entity}" @click="${(e: Event) => this._unjoin(e)}">
@@ -243,7 +243,7 @@ class SonosCard extends LitElement {
                       }
                     })}
                     ${this.config.entities.map((entity) => {
-                      if (entity != this.active && !this._hass.states[this.active].attributes['sonos_group'].includes(entity)) {
+                      if (entity != this.active && !this._hass.states[this.active].attributes['group_members'].includes(entity)) {
                         return html`
                           <div class="member join-member" data-member="${entity}" @click="${(e: Event) => this._join(e)}">
                             <div class="member-inner" data-member="${entity}">
@@ -304,17 +304,17 @@ class SonosCard extends LitElement {
     this.callService(e, 'media_player', 'media_previous_track', entity);
   }
   private _volumeDown(e: Event, entity: string): void {
-    this.callService(e, 'media_player', 'volume_down', entity, { }, this._hass.states[entity].attributes['sonos_group']);
+    this.callService(e, 'media_player', 'volume_down', entity, { }, this._hass.states[entity].attributes['group_members']);
   }
 
   private _volumeUp(e: Event, entity: string): void {
-    this.callService(e, 'media_player', 'volume_up', entity, { }, this._hass.states[entity].attributes['sonos_group']);
+    this.callService(e, 'media_player', 'volume_up', entity, { }, this._hass.states[entity].attributes['group_members']);
   }
 
   private _volumeSet(e: Event, entity: string): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const volumeFloat = (e.target as any).value / 100;
-    this.callService(e, 'media_player', 'volume_set', entity, { volume_level: volumeFloat }, this._hass.states[entity].attributes['sonos_group']);
+    this.callService(e, 'media_player', 'volume_set', entity, { volume_level: volumeFloat }, this._hass.states[entity].attributes['group_members']);
   }
 
   private _sourceSet(e: Event): void {
