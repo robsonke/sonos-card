@@ -327,14 +327,14 @@ class SonosCard extends LitElement {
   private _join(e: Event): void {
     const dataset = (e.target as HTMLElement).dataset;
     if (dataset?.member) {
-      this.callService(e, 'sonos', 'join', dataset.member, { master: this.active });
+      this.callService(e, 'media_player', 'join', this.active, { group_members: [ dataset.member ] });
     }
   }
 
   private _unjoin(e: Event): void {
     const dataset = (e.target as HTMLElement).dataset;
     if (dataset?.member) {
-      this.callService(e, 'sonos', 'unjoin', dataset.member);
+      this.callService(e, 'media_player', 'unjoin', dataset.member);
     }
   }
 
