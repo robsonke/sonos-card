@@ -8,7 +8,7 @@ Heavily based on https://github.com/DBuit/sonos-card<br>
 * Control multiple speaker
 * Play favorites from list
 
-![Screenshot of card](screenshot.png)
+![Screenshot of card](screenshot.jpg)
 
 <details>
   <summary><b>Example lovelace yaml:</b></summary>
